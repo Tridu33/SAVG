@@ -1,0 +1,6 @@
+{
+    "files.watcherExclude": {
+        //"python.pythonPath":  "/home/tridu33/.conda/envs/${env:CONDA_DEFAULT_ENV}/bin/python",
+        "**/target": true        
+    }
+}

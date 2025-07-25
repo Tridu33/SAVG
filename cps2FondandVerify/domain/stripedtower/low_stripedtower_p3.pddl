@@ -1,0 +1,20 @@
+(define (problem stripedtower_p3) 
+    (:domain stripedtower)
+    (:objects
+        b1 r1 - BlockType)
+    (:init
+        (on_table Bottom)
+        (on r1 Bottom)
+        (on b1 r1)
+        (clear b1)
+        (isred r1)
+        (isblue b1)
+        (arm_empty)
+        (not (OneBinBox))
+        (not (OneRinBox))
+    )
+    (:goal (and
+        (inbox r1)
+        (inbox b1)
+        ))
+)

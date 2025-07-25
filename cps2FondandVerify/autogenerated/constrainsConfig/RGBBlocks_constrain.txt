@@ -1,0 +1,4 @@
+f0 = Implies(Not(clear(Bottom)),Exists([x,y],And(on(x,y),clear(x))))
+f1 = Implies(And(     Not(Exists([x],(And(isRed(x),holding(x))))),    Not(Exists([x],(And(isGreen(x),holding(x))))),    Not(Exists([x],(And(isBlue(x),holding(x)))))),arm_empty)
+constraint = And(f0,f1)
+

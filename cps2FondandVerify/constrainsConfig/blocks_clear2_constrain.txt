@@ -1,0 +1,5 @@
+f0 = Implies(Not(clear(A)),Exists(x,clear(x)))
+f1 = Implies(Not(clear(A)),Exists([x,y],And(on(x,y),clear(x))))
+f2 = Implies(Not(Exists([x],(holding(x)))),arm_empty)
+f3 = Implies(arm_empty,Not(Exists([x],(holding(x)))))
+constraint = (And(f0,f1,f2,f3))

@@ -1,0 +1,17 @@
+digraph G {
+    node [shape=plaintext]
+128->36[label = "vAct"]
+36->35[label = "rootiscur2q"]
+35->32[label = "pushkids2qOne"]
+35->12[label = "extract"]
+32->1[label = "extract"]
+1->0[label = "pushkids2q"]
+1->11[label = "extract"]1->8[label = "extract"]
+0->1[label = "extract"]0->0[label = "extract"]0->2[label = "extract"]
+11->8[label = "pushkids2qOne"]
+11->12[label = "extract"]
+8->8[label = "extract"]8->10[label = "extract"]
+10->12[label = "extract"]
+2->84[label = "extract"]
+
+}

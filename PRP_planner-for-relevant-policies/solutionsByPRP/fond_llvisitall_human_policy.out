@@ -1,0 +1,27 @@
+Mapping:
+
+  var0:0	<-> 	 allvisited()
+  var0:1	<-> 	 not(allvisited())
+  var1:0	<-> 	 h_curvisted()
+  var1:1	<-> 	 not(h_curvisted())
+  var2:0	<-> 	 vgoal()
+  var2:1	<-> 	 not(vgoal())
+  var3:0	<-> 	 vstart()
+  var3:1	<-> 	 not(vstart())
+
+Policy:
+
+If holds: vgoal()
+Execute: goal / SC / d=0
+
+If holds: vstart()
+Execute: 8_virtual_source_act_1_7  / SC / d=1
+
+If holds: not(vstart())/not(allvisited())/not(h_curvisted())/not(vgoal())
+Execute: 0_visitcur_7_1  / SC / d=1
+
+If holds: not(vstart())/not(allvisited())/h_curvisted()/not(vgoal())
+Execute: 1_updatecur2llnext_0_1  / SC / d=2
+
+FSAP:
+

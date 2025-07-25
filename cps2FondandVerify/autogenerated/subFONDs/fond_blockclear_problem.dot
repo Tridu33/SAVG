@@ -1,0 +1,8 @@
+digraph G {
+    node [shape=plaintext]
+8->0[label = "vAct"]
+0->1[label = "unstack"]0->7[label = "unstack"]
+1->0[label = "putdown"]
+1->0[label = "stack"]
+
+}

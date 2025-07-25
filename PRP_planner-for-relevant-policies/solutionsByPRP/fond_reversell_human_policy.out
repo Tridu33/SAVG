@@ -1,0 +1,32 @@
+Mapping:
+
+  var0:0	<-> 	 allvisited()
+  var0:1	<-> 	 not(allvisited())
+  var1:0	<-> 	 h_curinserted()
+  var1:1	<-> 	 not(h_curinserted())
+  var2:0	<-> 	 h_curispophead1()
+  var2:1	<-> 	 not(h_curispophead1())
+  var3:0	<-> 	 vgoal()
+  var3:1	<-> 	 not(vgoal())
+  var4:0	<-> 	 vstart()
+  var4:1	<-> 	 not(vstart())
+
+Policy:
+
+If holds: vgoal()
+Execute: goal / SC / d=0
+
+If holds: not(vstart())/not(allvisited())/not(h_curinserted())/h_curispophead1()/not(vgoal())
+Execute: 2_insert2_1_13  / SC / d=1
+
+If holds: not(vstart())/not(allvisited())/not(h_curinserted())/not(h_curispophead1())/not(vgoal())
+Execute: 0_pophead1_2  / SC / d=2
+
+If holds: vstart()
+Execute: 16_virtual_source_act_0  / SC / d=3
+
+If holds: not(vstart())/not(allvisited())/h_curinserted()/not(h_curispophead1())/not(vgoal())
+Execute: 1_gethead1_0  / SC / d=3
+
+FSAP:
+

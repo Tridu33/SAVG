@@ -1,0 +1,119 @@
+\label{index_mainpage}%
+\Hypertarget{index_mainpage}%
+
+
+Installation dependencies\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{pip install z3 z3-\/solver==4.8.10.0 networkx func\_timeout matplotlib }
+
+\end{DoxyCode}
+
+
+Based on python3.\+8, this tool automatically verifies whether high-\/level modeling is a \char`\"{}sound abstraction\char`\"{} corresponding to low-\/level models. Some windows users may need the following installation scripts if they are not using miniconda\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{python -\/m pip install z3 z3-\/solver==4.8.10.0 networkx func\_timeout matplotlib }
+
+\end{DoxyCode}
+
+
+Parameters\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{>python main.py -\/-\/help}
+\DoxyCodeLine{usage: main.py [-\/h] [-\/domainname DOMAINNAME] [-\/cpn CPN] [-\/deletehistory DELETEHISTORY] [-\/debug DEBUG]}
+\DoxyCodeLine{               [-\/planner PLANNER]}
+\DoxyCodeLine{}
+\DoxyCodeLine{code autoGenerator}
+\DoxyCodeLine{}
+\DoxyCodeLine{optional arguments:}
+\DoxyCodeLine{  -\/h, -\/-\/help            show this help message and exit}
+\DoxyCodeLine{  -\/domainname DOMAINNAME}
+\DoxyCodeLine{                        Path to fond domain files(default=dfs). -\/-\/ OPTIONAL}
+\DoxyCodeLine{  -\/cpn CPN              number of classical plans,like '3' for '*p1,*p2,*p3'. -\/-\/ NOT OPTIONAL}
+\DoxyCodeLine{  -\/deletehistory DELETEHISTORY}
+\DoxyCodeLine{                        delete history output files or not. -\/-\/ OPTIONAL}
+\DoxyCodeLine{  -\/debug DEBUG          print DEBUG message or not. -\/-\/ OPTIONAL FOR TEST}
+\DoxyCodeLine{  -\/planner PLANNER      PRP(fairness) or FONDASP(conditional fairness). -\/-\/ OPTIONAL FOR TEST}
+
+\end{DoxyCode}
+\hypertarget{index_autotoc_md0}{}\doxysection{System function introduction}\label{index_autotoc_md0}
+The main algorithm of the FOND\$$^\wedge$\{+\}\$ generation and verification, including two fucntions Function \$cps2fond\$ and \$verify\$.
+
+Function \$cps2fond\$ for FOND\$$^\wedge$+\$ abstraction generation consists of four steps as follows\+:
+
+
+\begin{DoxyItemize}
+\item For each instance \$p\+\_\+i \textbackslash{}in \textbackslash{}mathcal\{P\}\$, traverse every reachable concrete states and its state transitions from \$p\+\_\+i\$, and get the sampled abstract state transitions graph \$\textbackslash{}mathcal\{E\}(p\+\_\+i)\$ with the given \$m\$;
+\item Merge all \$\textbackslash{}mathcal\{E\}(p\+\_\+i)\$ for the state transitions graph \$\textbackslash{}mathcal\{E\}\+\_\+\{fond\}\$;
+\item Get the FOND\$$^\wedge$+\$ planning problem from \$\textbackslash{}mathcal\{E\}\+\_\+\{fond\}\$;
+\end{DoxyItemize}
+
+If all passed it returns the FOND\$$^\wedge$+\$ problem \$\textbackslash{}mathcal\{G\}\+\_\+h\$,else it returns \$\+No\$ which means the refinement mapping \$m\$ given is is not fine-\/grained enough.
+\begin{DoxyItemize}
+\item Function \$verify\$ will firstly check whether each action \$a \textbackslash{}in A\$ satisfies the formula \$m(s\+\_\+h) \textbackslash{}supset \textbackslash{}exists \textbackslash{}vec\{x\}.Poss(a\+\_\+k(\textbackslash{}vec\{x\}))\$, where \$\+Poss(a\+\_\+k(\textbackslash{}vec\{x\}))\$ means a formula describing the precondition of low-\/level action \$a\+\_\+k\$. ~\newline
+
+\item Function \$verify\$ also check whether the conjunctive normal form of all initial states(goals) from any classical planning instance of \$\textbackslash{}mathcal\{P\}\$ and the first order formula \$\textbackslash{}phi\+\_\+\{I\}\$ describing the initial state(goal) of the original generalized planning is equivalent, respectively. Let \$\textbackslash{}phi\+\_\+\{I\}\$(\$\textbackslash{}phi\+\_\+\{G\}\$) denotes the first order formula describing the initial state \$\+S\+\_\+0\$(goal \$\+G\$) in the original generalized planning problem, there is \$m\$ instances in \$\textbackslash{}mathcal\{S\}\$, then we need to verify the \$m(hs\+\_\+\+I$^\wedge$1,...,hs\+\_\+\+I$^\wedge$m) \textbackslash{}supset \textbackslash{}phi\+\_\+\{I\}\$ and \$m(hs\+\_\+\+G$^\wedge$1,...,hs\+\_\+\+G$^\wedge$m) \textbackslash{}supset \textbackslash{}phi\+\_\+\{G\}\$.
+\end{DoxyItemize}\hypertarget{index_autotoc_md1}{}\doxysection{The Main Process and usage}\label{index_autotoc_md1}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{python main.py -\/domainname blocks\_clear -\/cpn 1 -\/deletehistory False -\/debug True}
+\DoxyCodeLine{python main.py -\/domainname llvisitall -\/cpn 3 -\/deletehistory False -\/debug True}
+\DoxyCodeLine{python main.py -\/domainname reversell -\/cpn 1 -\/deletehistory False -\/debug True}
+\DoxyCodeLine{python main.py -\/domainname stripedtower -\/cpn 4 -\/deletehistory False -\/debug True }
+\DoxyCodeLine{python main.py -\/domainname treetraversal -\/cpn 4 -\/deletehistory False -\/debug True }
+\DoxyCodeLine{python main.py -\/domainname RGBBlocks -\/cpn 4 -\/deletehistory False -\/debug True }
+\DoxyCodeLine{}
+\DoxyCodeLine{python main.py -\/domainname blocks\_clear2 -\/cpn 1 -\/deletehistory False -\/debug True -\/planner FONDASP}
+\DoxyCodeLine{python main.py -\/domainname RGBBlocks2 -\/cpn 4 -\/deletehistory False -\/debug True -\/planner FONDASP}
+
+\end{DoxyCode}
+
+
+the out put files is under folder {\ttfamily autogenerated}.\hypertarget{index_autotoc_md2}{}\doxysection{get the policy}\label{index_autotoc_md2}
+\hypertarget{index_autotoc_md3}{}\doxysubsection{by PRP}\label{index_autotoc_md3}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{./RunPRPForCurDomain.sh llvisitall}
+\DoxyCodeLine{./PrintHuman\_Policy.sh llvisitall}
+\DoxyCodeLine{python ./DrawDotPolicy.py -\/domainname llvisitall}
+\DoxyCodeLine{}
+\DoxyCodeLine{./RunPRPForCurDomain.sh reversell}
+\DoxyCodeLine{./PrintHuman\_Policy.sh reversell}
+\DoxyCodeLine{python ./DrawDotPolicy.py -\/domainname reversell}
+\DoxyCodeLine{}
+\DoxyCodeLine{./RunPRPForCurDomain.sh blocks\_clear}
+\DoxyCodeLine{./PrintHuman\_Policy.sh blocks\_clear}
+\DoxyCodeLine{python ./DrawDotPolicy.py -\/domainname blocks\_clear}
+\DoxyCodeLine{}
+\DoxyCodeLine{./RunPRPForCurDomain.sh stripedtower}
+\DoxyCodeLine{./PrintHuman\_Policy.sh stripedtower}
+\DoxyCodeLine{python ./DrawDotPolicy.py -\/domainname stripedtower}
+\DoxyCodeLine{}
+\DoxyCodeLine{./RunPRPForCurDomain.sh treetraversal}
+\DoxyCodeLine{./PrintHuman\_Policy.sh treetraversal}
+\DoxyCodeLine{python ./DrawDotPolicy.py -\/domainname treetraversal}
+\DoxyCodeLine{}
+\DoxyCodeLine{./RunPRPForCurDomain.sh RGBBlocks}
+\DoxyCodeLine{./PrintHuman\_Policy.sh RGBBlocks}
+\DoxyCodeLine{python ./DrawDotPolicy.py -\/domainname RGBBlocks}
+
+\end{DoxyCode}
+
+
+out files is generated under folder {\ttfamily solutions\+By\+PRP}\hypertarget{index_autotoc_md4}{}\doxysubsection{by FOND-\/\+ASP}\label{index_autotoc_md4}
+copy {\ttfamily fond\+\_\+\+RGBBlocks2\+\_\+d.\+pddl} and {\ttfamily fond\+\_\+\+RGBBlocks2\+\_\+p.\+pddl} to folder {\ttfamily /mnt/d/\+FOND-\/\+ASP/domains/pddl/autogenerated/}, {\ttfamily cd /mnt/d/\+FOND-\/\+ASP}and run\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\$ python -\/m fcfond.main -\/stats -\/out output.RGBBlocks2 -\/planner fcfond/planner\_clingo/fondplus\_show\_pretty.lp -\/pddl domains/pddl/autogenerated/fond\_RGBBlocks2\_d.pddl domains/pddl/autogenerated/fond\_RGBBlocks2\_p.pddl }
+\DoxyCodeLine{\$ python -\/m fcfond.main -\/stats -\/out output.block\_clear -\/planner fcfond/planner\_clingo/fondplus\_show\_pretty.lp -\/pddl domains/pddl/autogenerated/fond\_blocks\_clear2\_d.pddl domains/pddl/autogenerated/fond\_blocks\_clear2\_p.pddl}
+
+\end{DoxyCode}
+
+
+output is the file {\ttfamily output.\+RGBBlocks2/stdout-\/asp.txt}. 

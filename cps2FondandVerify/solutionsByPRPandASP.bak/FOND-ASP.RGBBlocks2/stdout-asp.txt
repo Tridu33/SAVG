@@ -1,0 +1,33 @@
+fond_RGBBlocks2_p
+clingo version 5.5.2
+Reading from ...planner_clingo/fondplus_show_pretty.lp ...
+Solving...
+############################################################
+Solution 1 - Policy Size: 8 - Cost: [] - Optimal? False
+============================================================
+0: "<vstart()>"
+	 "32_virtual_source_act_0()"
+1: "<>"
+	 "0_picktop_12_10_9_4_2_1()"
+2: "<blockscleared(),hred()>"
+	 "12_colr_24()"
+3: "<blockscleared(),hgreen()>"
+	 "10_colg_24()"
+4: "<blockscleared(),hblue()>"
+	 "9_colb_24()"
+5: "<hred()>"
+	 "4_colr_0()"
+6: "<hgreen()>"
+	 "2_colg_0()"
+7: "<hblue()>"
+	 "1_colb_0()"
+############################################################
+Answer: 1
+plan("<vstart()>","32_virtual_source_act_0()") plan("<>","0_picktop_12_10_9_4_2_1()") plan("<blockscleared(),hred()>","12_colr_24()") plan("<blockscleared(),hgreen()>","10_colg_24()") plan("<blockscleared(),hblue()>","9_colb_24()") plan("<hred()>","4_colr_0()") plan("<hgreen()>","2_colg_0()") plan("<hblue()>","1_colb_0()")
+SATISFIABLE
+
+Models       : 1+
+Calls        : 1
+Time         : 0.040s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.030s
+

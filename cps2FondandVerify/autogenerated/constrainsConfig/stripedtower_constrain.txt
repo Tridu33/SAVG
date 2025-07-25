@@ -1,0 +1,8 @@
+f0 = Implies(Not(Exists([x],(holding(x)))),arm_empty)
+f1 = Implies(Not(Exists([x,y],(And(inbox(x),inbox(y),isblue(x),isred(y))))),Exists([x,y],And(on(x,y),clear(x))))
+f2 = Implies(Not(Exists([x],(And(inbox(x),isblue(x))))),Not(OneBinBox))
+f3 = Implies(Not(Exists([x],(And(inbox(x),isred(x))))),Not(OneRinBox))
+f4 = Implies(Exists([x],(And(inbox(x),isblue(x)))),OneBinBox)
+f5 = Implies(Exists([x],(And(inbox(x),isred(x)))),OneRinBox)
+constraint = And(f0,f1,f2,f3,f4,f5)
+

@@ -1,0 +1,14 @@
+fondpddl.egg-info
+__pycache__
+.vscode
+/notes
+/tmp
+/fcfondplanner.egg-info
+/fcfond/res
+/results
+Pipfile.lock
+out/
+*.pyc
+output*
+test.lp
+work.py

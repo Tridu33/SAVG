@@ -1,0 +1,532 @@
+begin_version
+3
+end_version
+begin_metric
+0
+end_metric
+6
+begin_variable
+var5
+-1
+2
+Atom vstart()
+NegatedAtom vstart()
+end_variable
+begin_variable
+var0
+-1
+2
+Atom blockscleared()
+NegatedAtom blockscleared()
+end_variable
+begin_variable
+var1
+-1
+2
+Atom hblue()
+NegatedAtom hblue()
+end_variable
+begin_variable
+var2
+-1
+2
+Atom hgreen()
+NegatedAtom hgreen()
+end_variable
+begin_variable
+var3
+-1
+2
+Atom hred()
+NegatedAtom hred()
+end_variable
+begin_variable
+var4
+-1
+2
+Atom vgoal()
+NegatedAtom vgoal()
+end_variable
+0
+begin_state
+0
+1
+1
+1
+1
+1
+end_state
+begin_goal
+1
+5 0
+end_goal
+13
+begin_operator
+0_picktop_12_10_9_4_2_1_DETDUP_0 
+4
+2 1
+3 1
+5 1
+0 1
+2
+0 1 1 0
+0 4 1 0
+0
+end_operator
+begin_operator
+0_picktop_12_10_9_4_2_1_DETDUP_1 
+4
+2 1
+4 1
+5 1
+0 1
+2
+0 1 1 0
+0 3 1 0
+0
+end_operator
+begin_operator
+0_picktop_12_10_9_4_2_1_DETDUP_2 
+4
+3 1
+4 1
+5 1
+0 1
+2
+0 1 1 0
+0 2 1 0
+0
+end_operator
+begin_operator
+0_picktop_12_10_9_4_2_1_DETDUP_3 
+5
+1 1
+2 1
+3 1
+5 1
+0 1
+1
+0 4 1 0
+0
+end_operator
+begin_operator
+0_picktop_12_10_9_4_2_1_DETDUP_4 
+5
+1 1
+2 1
+4 1
+5 1
+0 1
+1
+0 3 1 0
+0
+end_operator
+begin_operator
+0_picktop_12_10_9_4_2_1_DETDUP_5 
+5
+1 1
+3 1
+4 1
+5 1
+0 1
+1
+0 2 1 0
+0
+end_operator
+begin_operator
+10_colg_24 
+4
+1 0
+2 1
+4 1
+0 1
+2
+0 3 0 1
+0 5 1 0
+0
+end_operator
+begin_operator
+12_colr_24 
+4
+1 0
+2 1
+3 1
+0 1
+2
+0 4 0 1
+0 5 1 0
+0
+end_operator
+begin_operator
+1_colb_0 
+5
+1 1
+3 1
+4 1
+5 1
+0 1
+1
+0 2 0 1
+0
+end_operator
+begin_operator
+2_colg_0 
+5
+1 1
+2 1
+4 1
+5 1
+0 1
+1
+0 3 0 1
+0
+end_operator
+begin_operator
+32_virtual_source_act_0 
+0
+6
+0 1 -1 1
+0 2 -1 1
+0 3 -1 1
+0 4 -1 1
+0 5 -1 1
+0 0 0 1
+0
+end_operator
+begin_operator
+4_colr_0 
+5
+1 1
+2 1
+3 1
+5 1
+0 1
+1
+0 4 0 1
+0
+end_operator
+begin_operator
+9_colb_24 
+4
+1 0
+3 1
+4 1
+0 1
+2
+0 2 0 1
+0 5 1 0
+0
+end_operator
+0
+begin_SG
+switch 1
+check 0
+switch 2
+check 0
+switch 3
+check 0
+check 0
+switch 4
+check 0
+check 0
+switch 5
+check 0
+check 0
+switch 0
+check 0
+check 0
+check 1
+12
+check 0
+check 0
+check 0
+check 0
+switch 3
+check 0
+switch 4
+check 0
+check 0
+switch 5
+check 0
+check 0
+switch 0
+check 0
+check 0
+check 1
+6
+check 0
+check 0
+check 0
+switch 4
+check 0
+switch 5
+check 0
+check 0
+switch 0
+check 0
+check 0
+check 1
+7
+check 0
+check 0
+check 0
+check 0
+check 0
+check 0
+switch 2
+check 0
+switch 3
+check 0
+check 0
+switch 4
+check 0
+check 0
+switch 5
+check 0
+check 0
+switch 0
+check 0
+check 0
+check 1
+8
+check 0
+check 0
+check 0
+check 0
+switch 3
+check 0
+switch 4
+check 0
+check 0
+switch 5
+check 0
+check 0
+switch 0
+check 0
+check 0
+check 1
+9
+check 0
+check 0
+check 0
+switch 4
+check 0
+switch 5
+check 0
+check 0
+switch 0
+check 0
+check 0
+check 1
+11
+check 0
+check 0
+switch 5
+check 0
+check 0
+switch 0
+check 0
+check 0
+check 6
+0
+1
+2
+3
+4
+5
+check 0
+check 0
+check 0
+check 0
+check 0
+switch 0
+check 0
+check 1
+10
+check 0
+check 0
+end_SG
+begin_DTG
+1
+1
+10
+0
+0
+end_DTG
+begin_DTG
+1
+1
+10
+1
+0 0
+1
+0
+0
+5
+2 1
+3 1
+4 1
+5 1
+0 1
+end_DTG
+begin_DTG
+3
+1
+10
+1
+0 0
+1
+8
+5
+1 1
+3 1
+4 1
+5 1
+0 1
+1
+12
+5
+1 0
+3 1
+4 1
+5 1
+0 1
+1
+0
+2
+5
+1 1
+3 1
+4 1
+5 1
+0 1
+end_DTG
+begin_DTG
+3
+1
+10
+1
+0 0
+1
+6
+5
+1 0
+2 1
+4 1
+5 1
+0 1
+1
+9
+5
+1 1
+2 1
+4 1
+5 1
+0 1
+1
+0
+1
+5
+1 1
+2 1
+4 1
+5 1
+0 1
+end_DTG
+begin_DTG
+3
+1
+10
+1
+0 0
+1
+7
+5
+1 0
+2 1
+3 1
+5 1
+0 1
+1
+11
+5
+1 1
+2 1
+3 1
+5 1
+0 1
+1
+0
+0
+5
+1 1
+2 1
+3 1
+5 1
+0 1
+end_DTG
+begin_DTG
+1
+1
+10
+1
+0 0
+3
+0
+6
+5
+1 0
+2 1
+3 0
+4 1
+0 1
+0
+7
+5
+1 0
+2 1
+3 1
+4 0
+0 1
+0
+12
+5
+1 0
+2 0
+3 1
+4 1
+0 1
+end_DTG
+begin_CG
+5
+1 4
+2 5
+3 5
+4 5
+5 4
+4
+2 4
+3 4
+4 4
+5 3
+4
+1 3
+3 4
+4 4
+5 3
+4
+1 3
+2 4
+4 4
+5 3
+4
+1 3
+2 4
+3 4
+5 3
+4
+1 3
+2 4
+3 4
+4 4
+end_CG

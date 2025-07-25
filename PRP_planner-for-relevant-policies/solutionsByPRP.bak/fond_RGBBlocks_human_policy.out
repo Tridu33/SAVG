@@ -1,0 +1,46 @@
+Mapping:
+
+  var0:0	<-> 	 blockscleared()
+  var0:1	<-> 	 not(blockscleared())
+  var1:0	<-> 	 hblue()
+  var1:1	<-> 	 not(hblue())
+  var2:0	<-> 	 hgreen()
+  var2:1	<-> 	 not(hgreen())
+  var3:0	<-> 	 hred()
+  var3:1	<-> 	 not(hred())
+  var4:0	<-> 	 vgoal()
+  var4:1	<-> 	 not(vgoal())
+  var5:0	<-> 	 vstart()
+  var5:1	<-> 	 not(vstart())
+
+Policy:
+
+If holds: vgoal()
+Execute: goal / SC / d=0
+
+If holds: not(vstart())/blockscleared()/not(hblue())/not(hgreen())/hred()/not(vgoal())
+Execute: 12_colr_24  / SC / d=1
+
+If holds: not(vstart())/blockscleared()/hblue()/not(hgreen())/not(hred())/not(vgoal())
+Execute: 9_colb_24  / SC / d=1
+
+If holds: not(vstart())/blockscleared()/not(hblue())/hgreen()/not(hred())/not(vgoal())
+Execute: 10_colg_24  / SC / d=1
+
+If holds: not(vstart())/not(blockscleared())/not(hblue())/not(hgreen())/not(hred())/not(vgoal())
+Execute: 0_picktop_12_10_9_4_2_1  / SC / d=2
+
+If holds: vstart()
+Execute: 32_virtual_source_act_0  / SC / d=3
+
+If holds: not(vstart())/not(blockscleared())/hblue()/not(hgreen())/not(hred())/not(vgoal())
+Execute: 1_colb_0  / SC / d=3
+
+If holds: not(vstart())/not(blockscleared())/not(hblue())/hgreen()/not(hred())/not(vgoal())
+Execute: 2_colg_0  / SC / d=3
+
+If holds: not(vstart())/not(blockscleared())/not(hblue())/not(hgreen())/hred()/not(vgoal())
+Execute: 4_colr_0  / SC / d=3
+
+FSAP:
+

@@ -1,0 +1,145 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+    
+        {
+            "name": "Run main.py",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceRoot}/main.py",
+            "console": "integratedTerminal",
+            "args": [
+                "-domainname",
+                // "llvisitall",
+                // "reversell",
+                // "blocks_clear",
+                // "stripedtower",
+                // "treetraversal",
+                // "RGBBlocks",
+                "blocks_clear2",
+                // "RGBBlocks2",
+                // "3delivery",
+                //"striped",
+
+                // ,
+                "-cpn",
+                // "3"//llvisitall
+                // "1"//reversell
+                // "1"//blocks_clear
+                // "4"//stripedtower
+                // "4"// treetraversal
+                // "4" //RGBBlocks
+                "1"//blocks_clear2
+                // "4" //RGBBlocks2
+                
+                // "4"//"4"
+                //"26"//"746"
+                , "-planner", "FONDASP" // blocks_clear2, RGBBlocks2
+            ],
+            "justMyCode": true
+        },
+        {
+            "type": "bashdb",
+            "request": "launch",
+            "name": "run.sh",
+            // "cwd": "${workspaceRoot}",
+            "cwd": "${workspaceFolder}",
+            "program": "${workspaceRoot}/run.sh",
+            "args": [
+                "./domain/tree/bfs_d.pddl",
+                "./domain/tree/bfs_p.pddl"
+            ]
+        },
+        {
+            "name": "Py-Translate",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceRoot}/prp/translate/translate.py",
+            "args": [
+                "300",
+                "./domain/bfs/bfs_d.pddl",
+                "./domain/bfs/bfs_p.pddl"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal"
+        },
+        {
+            "type": "pwa-chrome",
+            "request": "launch",
+            "name": "Launch Chrome against localhost",
+            "url": "http://localhost:8080",
+            "webRoot": "${workspaceFolder}"
+        },
+        {
+            "type": "bashdb",
+            "request": "launch",
+            "name": "prp-Debug",
+            //"cwd": "${workspaceRoot}",
+            "cwd": "${fileDirname}",
+            "program": "${workspaceRoot}/prp/prp",
+            "args": [
+                "${workspaceRoot}/domain/blocksworld/domain-fixed.pddl",
+                "${workspaceRoot}/domain/blocksworld/p01.pddl",
+                "--dump-policy",
+                "1"
+            ]
+        },
+        {
+            "type": "bashdb",
+            "request": "launch",
+            "name": "prp-bfs_bash",
+            // "cwd": "${workspaceRoot}",
+            // "cwd": "${fileDirname}",
+            "cwd":"/mnt/d/tridu33/postgraduate/QNP_GP/prp/",
+            "program": "/mnt/d/tridu33/postgraduate/QNP_GP/prp/prp",
+            // "program": "${workspaceRoot}/prp/prp",
+            // "showDebugOutput": true,
+
+            // reversell
+            "trace": true,
+            "args": [
+                "/mnt/d/tridu33/postgraduate/QNP_GP/fond2code/domain/reversell/reversell_d.pddl",
+                "/mnt/d/tridu33/postgraduate/QNP_GP/fond2code/domain/reversell/reversell_p.pddl",
+                // "/mnt/d/tridu33/postgraduate/QNP_GP/fond2code/domain/bfs/bfs_p.pddl",
+                // "/mnt/d/tridu33/postgraduate/QNP_GP/fond2code/domain/bfs/bfs_p.pddl",
+                // "--dump-policy",
+                // "1",
+                "--dump-policy",
+                "2",
+                "--optimize-final-policy",
+                "1"
+            ]
+        },
+        {
+            "name": "(gdb) Launch",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceRoot}/prp/prp",
+            "args": [
+                "${workspaceRoot}/qnp2fond_blocks_d.pddl ${workspaceRoot}/qnp2fond_blocks_p.pddl  --dump-policy 1"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            //"miDebuggerPath": "/path/to/gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        }
+    ]
+}

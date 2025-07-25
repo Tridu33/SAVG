@@ -1,0 +1,7 @@
+digraph G {
+    node [shape=plaintext]
+128->0[label = "vAct"]
+0->6[label = "picktop"]
+6->8[label = "putRinbox"]
+
+}

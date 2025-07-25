@@ -1,0 +1,42 @@
+Mapping:
+
+  var0:0	<-> 	 allvisited()
+  var0:1	<-> 	 not(allvisited())
+  var1:0	<-> 	 curhasunpushedkids()
+  var1:1	<-> 	 not(curhasunpushedkids())
+  var2:0	<-> 	 lenis0()
+  var2:1	<-> 	 not(lenis0())
+  var3:0	<-> 	 lenis1()
+  var3:1	<-> 	 not(lenis1())
+  var4:0	<-> 	 somenodesmissed()
+  var4:1	<-> 	 not(somenodesmissed())
+  var5:0	<-> 	 vgoal()
+  var5:1	<-> 	 not(vgoal())
+  var6:0	<-> 	 vstart()
+  var6:1	<-> 	 not(vstart())
+
+Policy:
+
+If holds: vgoal()
+Execute: goal / SC / d=0
+
+If holds: not(vstart())/not(allvisited())/not(somenodesmissed())/not(lenis0())/not(curhasunpushedkids())/lenis1()/not(vgoal())
+Execute: 2_extract_52  / SC / d=1
+
+If holds: not(vstart())/not(allvisited())/not(somenodesmissed())/lenis0()/not(curhasunpushedkids())/not(lenis1())/not(vgoal())
+Execute: 4_rootiscur2q_2_3  / SC / d=2
+
+If holds: not(vstart())/not(allvisited())/not(somenodesmissed())/not(lenis0())/not(curhasunpushedkids())/not(lenis1())/not(vgoal())
+Execute: 0_extract_0_2_1  / SC / d=2
+
+If holds: vstart()
+Execute: 32_virtual_source_act_4  / SC / d=3
+
+If holds: not(vstart())/not(allvisited())/not(somenodesmissed())/not(lenis0())/curhasunpushedkids()/lenis1()/not(vgoal())
+Execute: 3_pushkids2qone_0  / SC / d=3
+
+If holds: not(vstart())/not(allvisited())/not(somenodesmissed())/not(lenis0())/curhasunpushedkids()/not(lenis1())/not(vgoal())
+Execute: 1_pushkids2q_0  / SC / d=3
+
+FSAP:
+

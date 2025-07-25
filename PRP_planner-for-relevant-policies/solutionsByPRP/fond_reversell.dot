@@ -1,0 +1,12 @@
+digraph G {
+    node [shape=plaintext]
+2->1[label = "insert2"]
+2->13[label = "insert2"]
+
+0->2[label = "pophead1"]
+
+16->0[label = "virtualSourceAct"]
+
+1->0[label = "gethead1"]
+
+}

@@ -1,0 +1,23 @@
+digraph G {
+    node [shape=plaintext]
+34->84[label = "extract"]
+
+2->84[label = "extract"]
+
+36->34[label = "rootiscur2q"]
+36->35[label = "rootiscur2q"]
+
+0->2[label = "extract"]
+0->1[label = "extract"]
+0->0[label = "extract"]
+
+128->36[label = "virtualSourceAct"]
+
+32->0[label = "extract"]
+32->1[label = "extract"]
+
+1->0[label = "pushkids2q"]
+
+35->32[label = "pushkids2qone"]
+
+}

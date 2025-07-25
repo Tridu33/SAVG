@@ -1,0 +1,4 @@
+f0 = Implies(Not(ForAll([node],(visited(node)))), Exists([x,y],And(curpoint2(x),llnext(x,y)))) #  Exists node unvisited ==> Not the last node vT 
+f1 = Implies(Not(ForAll([node],(visited(node)))), Exists([x],And(curpoint2(x),Not(visited(x))))) #  Exists node unvisited ==> curpointed Node unvisited 
+constraint = And(f0,f1)
+

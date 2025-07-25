@@ -1,0 +1,14 @@
+digraph G {
+    node [shape=plaintext]
+32->0[label = "vAct"]
+0->4[label = "pickTop"]0->2[label = "pickTop"]0->1[label = "pickTop"]0->12[label = "pickTop"]
+4->0[label = "putTop"]
+4->0[label = "colR"]
+2->0[label = "putTop"]
+2->0[label = "colG"]
+1->0[label = "putTop"]
+1->0[label = "colB"]
+12->0[label = "putTop"]
+12->24[label = "colR"]
+
+}

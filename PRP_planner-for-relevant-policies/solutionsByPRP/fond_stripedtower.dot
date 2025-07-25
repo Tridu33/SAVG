@@ -1,0 +1,23 @@
+digraph G {
+    node [shape=plaintext]
+13->120[label = "putbinbox"]
+
+22->120[label = "putrinbox"]
+
+8->13[label = "picktop"]
+8->14[label = "picktop"]
+
+16->22[label = "picktop"]
+
+6->8[label = "putrinbox"]
+
+14->8[label = "putraside"]
+
+5->16[label = "putbinbox"]
+
+0->6[label = "picktop"]
+0->5[label = "picktop"]
+
+128->0[label = "virtualSourceAct"]
+
+}

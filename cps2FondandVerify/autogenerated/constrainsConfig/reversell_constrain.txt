@@ -1,0 +1,7 @@
+f0 = Implies(Not(ForAll([node],(Or(reversed(node),vH1==node,vT1==node,vH2==node,vT2==node)))),Exists([x,y],And(curpoint2(x),llnext(vH1,x),llnext(x,y),Not(x==vT1))))
+f1 = Implies(And(Not(ForAll([node],(Or(reversed(node),vH1==node,vT1==node,vH2==node,vT2==node)))),Exists([node],(And(curpoint2(node),llnext(vH2,node)))))    ,    Exists( [x,y],And(llnext(vH1,y),curpoint2(x),Not(curpoint2(y)),Not(x==y),Not(curispophead1))))
+f2 = Implies(curispophead1, Exists([x,y],And(curpoint2(x),Not(x==y),llnext(vH2,y))))
+f3 = Implies(ForAll([node],(Or(reversed(node),vH1==node,vT1==node,vH2==node,vT2==node))),ForAll([node],(reversed(node))))
+f4 = Implies(Exists([node],(Not(reversed(node)))), Not(ForAll([node],Or(reversed(node),vH1==node,vT1==node,vH2==node,vT2==node))))
+constraint = And(f0,f1,f2,f3,f4)
+

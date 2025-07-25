@@ -1,0 +1,24 @@
+digraph G {
+    node [shape=plaintext]
+12->24[label = "colr"]
+
+9->24[label = "colb"]
+
+10->24[label = "colg"]
+
+0->12[label = "picktop"]
+0->10[label = "picktop"]
+0->9[label = "picktop"]
+0->4[label = "picktop"]
+0->2[label = "picktop"]
+0->1[label = "picktop"]
+
+32->0[label = "virtualSourceAct"]
+
+1->0[label = "colb"]
+
+2->0[label = "colg"]
+
+4->0[label = "colr"]
+
+}

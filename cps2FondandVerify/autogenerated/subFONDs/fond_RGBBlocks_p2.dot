@@ -1,0 +1,8 @@
+digraph G {
+    node [shape=plaintext]
+32->0[label = "vAct"]
+0->10[label = "pickTop"]
+10->0[label = "putTop"]
+10->24[label = "colG"]
+
+}

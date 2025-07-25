@@ -1,0 +1,53 @@
+Mapping:
+
+  var0:0	<-> 	 h()
+  var0:1	<-> 	 not(h())
+  var1:0	<-> 	 h_onebinbox()
+  var1:1	<-> 	 not(h_onebinbox())
+  var2:0	<-> 	 h_onebrinbox()
+  var2:1	<-> 	 not(h_onebrinbox())
+  var3:0	<-> 	 h_onerinbox()
+  var3:1	<-> 	 not(h_onerinbox())
+  var4:0	<-> 	 holdingb()
+  var4:1	<-> 	 not(holdingb())
+  var5:0	<-> 	 holdingr()
+  var5:1	<-> 	 not(holdingr())
+  var6:0	<-> 	 vgoal()
+  var6:1	<-> 	 not(vgoal())
+  var7:0	<-> 	 vstart()
+  var7:1	<-> 	 not(vstart())
+
+Policy:
+
+If holds: vgoal()
+Execute: goal / SC / d=0
+
+If holds: not(vstart())/not(h_onebinbox())/not(h_onebrinbox())/h_onerinbox()/holdingb()/not(holdingr())/h()/not(vgoal())
+Execute: 13_putbinbox_120  / SC / d=1
+
+If holds: not(vstart())/h_onebinbox()/not(h_onebrinbox())/not(h_onerinbox())/not(holdingb())/holdingr()/h()/not(vgoal())
+Execute: 22_putrinbox_120  / SC / d=1
+
+If holds: not(vstart())/not(h_onebinbox())/not(h_onebrinbox())/h_onerinbox()/not(holdingb())/not(holdingr())/not(h())/not(vgoal())
+Execute: 8_picktop_13_14  / SC / d=2
+
+If holds: not(vstart())/h_onebinbox()/not(h_onebrinbox())/not(h_onerinbox())/not(holdingb())/not(holdingr())/not(h())/not(vgoal())
+Execute: 16_picktop_22  / SC / d=2
+
+If holds: not(vstart())/not(h_onebinbox())/not(h_onebrinbox())/not(h_onerinbox())/not(holdingb())/holdingr()/h()/not(vgoal())
+Execute: 6_putrinbox_8  / SC / d=3
+
+If holds: not(vstart())/not(h_onebinbox())/not(h_onebrinbox())/h_onerinbox()/not(holdingb())/holdingr()/h()/not(vgoal())
+Execute: 14_putraside_8  / SC / d=3
+
+If holds: not(vstart())/not(h_onebinbox())/not(h_onebrinbox())/not(h_onerinbox())/holdingb()/not(holdingr())/h()/not(vgoal())
+Execute: 5_putbinbox_16  / SC / d=3
+
+If holds: not(vstart())/not(h_onebinbox())/not(h_onebrinbox())/not(h_onerinbox())/not(holdingb())/not(holdingr())/not(h())/not(vgoal())
+Execute: 0_picktop_6_5  / SC / d=4
+
+If holds: vstart()
+Execute: 128_virtual_source_act_0  / SC / d=5
+
+FSAP:
+
