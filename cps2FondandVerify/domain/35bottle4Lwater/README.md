@@ -61,4 +61,4 @@ Examples:
 
 At the two branching states `(0,0)` and `(5,3)` the upper / lower policies pick different successors, giving two distinct but equivalent FOND policies (see `policy/fond_35bottle4Lwater_human_policy1.out` and `..._policy2.out`).
 
-
+![two policies](35bottle4Lwater.png)
