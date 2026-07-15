@@ -1,5 +1,13 @@
+#!/usr/bin/env python3
+# -*- coding: UTF-8 -*-
+# Python 3 port of translate_policy.py (the original used Python 2 print
+# statements).  Logic is unchanged — only the print calls were converted.
+# Tested against policy.out files produced by PRP `prp` 1.0.
 
-import re, pprint
+from __future__ import print_function
+
+import re
+
 
 def read_file(file_name):
     """Return a list of the lines of a file."""
@@ -8,9 +16,9 @@ def read_file(file_name):
     f.close()
     return file_lines
 
-def get_lines(file_name, lower_bound = None, upper_bound = None):
-    """ Gets all of the lines between the regex lower bound and upper bound. """
 
+def get_lines(file_name, lower_bound=None, upper_bound=None):
+    """ Gets all of the lines between the regex lower bound and upper bound. """
     toReturn = []
 
     # Get the file
@@ -33,7 +41,6 @@ def get_lines(file_name, lower_bound = None, upper_bound = None):
         if accepting:
             if pattern_high.search(line):
                 return toReturn
-
             toReturn.append(line)
         else:
             if pattern_low.search(line):
@@ -41,14 +48,15 @@ def get_lines(file_name, lower_bound = None, upper_bound = None):
 
     return toReturn
 
+
 index = 0
-var_lines = get_lines('output', lower_bound = 'end_metric', upper_bound = 'begin_state')
+var_lines = get_lines('output', lower_bound='end_metric', upper_bound='begin_state')
 
 num_vars = int(var_lines[index])
 index += 1
 
-def parse_var(lines, index):
 
+def parse_var(lines, index):
     assert 'begin_variable' == lines[index]
     index += 1
 
@@ -82,29 +90,30 @@ def parse_var(lines, index):
 
 
 mapping = {}
-
 for i in range(num_vars):
     (name, vals, index) = parse_var(var_lines, index)
     for j in range(len(vals)):
         mapping["%s:%s" % (name, j)] = vals[j]
 
-print "Mapping:\n"
-print '\n'.join(["  %s\t<-> \t %s" % (k,mapping[k]) for k in sorted(mapping.keys())])
-print
+print("Mapping:\n")
+print('\n'.join(["  %s\t<-> \t %s" % (k, mapping[k]) for k in sorted(mapping.keys())]))
+print()
+
 
 def translate_lines(lines):
     for line in lines:
         if 'If' == line[:2]:
-            print "If holds: %s" % '/'.join([mapping[item] for item in line.split(' ')[2:]])
+            print("If holds: %s" % '/'.join([mapping[item] for item in line.split(' ')[2:]]))
         else:
-            print line
+            print(line)
 
-print "Policy:"
+
+print("Policy:")
 policy_lines = read_file('policy.out')
 translate_lines(policy_lines)
-print
+print()
 
-print "FSAP:"
+print("FSAP:")
 fsap_lines = read_file('policy.fsap')
 translate_lines(fsap_lines)
-print
+print()

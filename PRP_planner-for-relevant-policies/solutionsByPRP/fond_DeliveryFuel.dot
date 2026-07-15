@@ -1,0 +1,7 @@
+digraph G {
+    node [shape=plaintext]
+patched->act[label = "goal"]
+
+8->0[label = "virtualSourceAct"]
+
+}

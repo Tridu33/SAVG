@@ -1,0 +1,15 @@
+
+If holds: var3:0
+Execute: goal / SC / d=0
+
+If holds: var4:1 var0:1 var1:1 var2:0 var3:1
+Execute: 2_insert2_1_13  / SC / d=1
+
+If holds: var4:1 var0:1 var1:1 var2:1 var3:1
+Execute: 0_pophead1_2  / SC / d=2
+
+If holds: var4:0
+Execute: 16_virtual_source_act_0  / SC / d=3
+
+If holds: var4:1 var0:1 var1:0 var2:1 var3:1
+Execute: 1_gethead1_0  / SC / d=3

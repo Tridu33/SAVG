@@ -1,0 +1,20 @@
+Mapping:
+
+  var0:0	<-> 	 vgoal()
+  var0:1	<-> 	 not(vgoal())
+  var1:0	<-> 	 vstart()
+  var1:1	<-> 	 not(vstart())
+
+Policy:
+
+If holds: vgoal()
+Execute: goal / SC / d=0
+
+If holds: not(vstart())
+Execute: patched_goal_act  / SC / d=1
+
+If holds: vstart()
+Execute: 4_virtual_source_act_0  / SC / d=2
+
+FSAP:
+

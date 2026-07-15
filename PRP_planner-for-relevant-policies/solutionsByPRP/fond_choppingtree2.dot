@@ -1,0 +1,10 @@
+digraph G {
+    node [shape=plaintext]
+1->6[label = "dropbranch"]
+1->0[label = "dropbranch"]
+
+0->1[label = "chopbranch"]
+
+8->0[label = "virtualSourceAct"]
+
+}

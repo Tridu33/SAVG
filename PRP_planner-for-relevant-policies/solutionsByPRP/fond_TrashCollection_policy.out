@@ -1,0 +1,9 @@
+
+If holds: var1:0
+Execute: goal / SC / d=0
+
+If holds: var2:1
+Execute: patched_goal_act  / SC / d=1
+
+If holds: var2:0
+Execute: 8_virtual_source_act_0  / SC / d=2

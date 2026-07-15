@@ -1,0 +1,30 @@
+
+If holds: var6:0
+Execute: goal / SC / d=0
+
+If holds: var7:1 var1:1 var2:1 var3:0 var4:0 var5:1 var0:0 var6:1
+Execute: 13_putbinbox_120  / SC / d=1
+
+If holds: var7:1 var1:0 var2:1 var3:1 var4:1 var5:0 var0:0 var6:1
+Execute: 22_putrinbox_120  / SC / d=1
+
+If holds: var7:1 var1:1 var2:1 var3:0 var4:1 var5:1 var0:1 var6:1
+Execute: 8_picktop_13_14  / SC / d=2
+
+If holds: var7:1 var1:0 var2:1 var3:1 var4:1 var5:1 var0:1 var6:1
+Execute: 16_picktop_22  / SC / d=2
+
+If holds: var7:1 var1:1 var2:1 var3:1 var4:1 var5:0 var0:0 var6:1
+Execute: 6_putrinbox_8  / SC / d=3
+
+If holds: var7:1 var1:1 var2:1 var3:0 var4:1 var5:0 var0:0 var6:1
+Execute: 14_putraside_8  / SC / d=3
+
+If holds: var7:1 var1:1 var2:1 var3:1 var4:0 var5:1 var0:0 var6:1
+Execute: 5_putbinbox_16  / SC / d=3
+
+If holds: var7:1 var1:1 var2:1 var3:1 var4:1 var5:1 var0:1 var6:1
+Execute: 0_picktop_6_5  / SC / d=4
+
+If holds: var7:0
+Execute: 128_virtual_source_act_0  / SC / d=5
