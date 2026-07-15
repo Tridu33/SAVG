@@ -1,0 +1,5 @@
+f0 = Implies(Not(Exists([b],holding(b))),arm_empty) 
+f1 = Implies(arm_empty,Not(Exists([b],holding(b)))) 
+f2 = Implies(Not(treeDown),Exists([b],And(onTree(b),clear(b),Not(b==Trunk)))) 
+f3 = Implies(ForAll([b],Or(chopped(b),b==Trunk)),Not(Exists([b],And(onTree(b),Not(b==Trunk))))) 
+constraint = And(f0,f1,f2,f3)

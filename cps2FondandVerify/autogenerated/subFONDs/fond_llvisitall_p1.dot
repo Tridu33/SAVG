@@ -1,5 +1,0 @@
-digraph G {
-    node [shape=plaintext]
-8->7[label = "vAct"]
-
-}

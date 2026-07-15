@@ -1,0 +1,22 @@
+(define (problem 3colorblocks_p4)
+    (:domain 3colorblocks)
+    (:objects
+        i1 i2 i3 - BlockType)
+    (:init
+        (on_table Bottom)
+        (on i1 Bottom)
+        (on i2 i1)
+        (on i3 i2)
+        (clear i3)
+        (isRed i1)
+        (isGreen i2)
+        (isBlue i3)
+        (arm_empty)
+    )
+    (:goal (and
+        (clear Bottom)
+        (inRedBox i1)
+        (inGreenBox i2)
+        (inBlueBox i3)
+        ))
+)

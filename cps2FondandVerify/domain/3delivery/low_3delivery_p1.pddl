@@ -1,0 +1,11 @@
+(define (problem 3delivery_p1)
+    (:domain 3delivery)
+    (:objects p1 - PackageType)
+    (:init
+        (atDepotPkg p1)
+        (arm_empty)
+        (not (inTruck p1))
+        (not (delivered p1))
+    )
+    (:goal (and (delivered p1)))
+)

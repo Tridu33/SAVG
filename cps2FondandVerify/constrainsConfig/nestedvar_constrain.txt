@@ -1,0 +1,4 @@
+f0 = Implies(Not(Exists([i],inX2(i))),x2empty) 
+f1 = Implies(x2empty,Not(Exists([i],inX2(i)))) 
+f2 = Implies(Exists([i],inX1(i)),Not(ForAll([i],Not(inX1(i))))) 
+constraint = And(f0,f1,f2)

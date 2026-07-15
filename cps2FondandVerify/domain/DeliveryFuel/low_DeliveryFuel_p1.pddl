@@ -1,0 +1,13 @@
+(define (problem deliveryfuel_p1)
+    (:domain deliveryfuel)
+    (:objects p1 - PackageType)
+    (:init
+        (atDepot)
+        (fuelOK)
+        (not (fuelLow))
+        (atDepotPkg p1)
+        (not (inTruck p1))
+        (not (delivered p1))
+    )
+    (:goal (and (atDepot) (delivered p1)))
+)

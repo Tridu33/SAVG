@@ -1,0 +1,18 @@
+(define (problem snow_p2)
+    (:domain snow)
+    (:objects d1 d2 w1 w2 - LocationType)
+    (:init
+        (atDry)
+        (drySnow d1)
+        (drySnow d2)
+        (wetSnow w1)
+        (wetSnow w2)
+        (not (dryCleared d1))
+        (not (dryCleared d2))
+        (not (wetCleared w1))
+        (not (wetCleared w2))
+    )
+    (:goal
+        (and (atDry) (dryCleared d1) (dryCleared d2) (wetCleared w1) (wetCleared w2))
+    )
+)

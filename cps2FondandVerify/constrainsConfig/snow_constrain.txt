@@ -1,0 +1,5 @@
+f0 = Implies(atDry,Not(atWet)) 
+f1 = Implies(atWet,Not(atDry)) 
+f2 = Implies(Exists([l],drySnow(l)),Not(ForAll([l],dryCleared(l)))) 
+f3 = Implies(Exists([l],wetSnow(l)),Not(ForAll([l],wetCleared(l)))) 
+constraint = And(f0,f1,f2,f3)

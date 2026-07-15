@@ -1,0 +1,12 @@
+(define (problem choppingtree2_p2)
+    (:domain choppingtree2)
+    (:objects b1 b2 - BranchType)
+    (:init
+        (onTree b1)
+        (onTree b2)
+        (clear b1)
+        (clear b2)
+        (arm_empty)
+    )
+    (:goal (and (chopped b1) (chopped b2)))
+)

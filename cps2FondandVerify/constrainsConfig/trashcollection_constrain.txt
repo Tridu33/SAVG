@@ -1,0 +1,5 @@
+f0 = Implies(atDump,Not(Exists([l],atLoc(l)))) 
+f1 = Implies(Exists([l],atLoc(l)),Not(atDump)) 
+f2 = Implies(Not(Exists([t],inTruck(t))),truckEmpty) 
+f3 = Implies(truckEmpty,Not(Exists([t],inTruck(t)))) 
+constraint = And(f0,f1,f2,f3)

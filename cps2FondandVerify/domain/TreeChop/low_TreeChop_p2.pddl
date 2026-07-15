@@ -1,0 +1,13 @@
+(define (problem treechop_p2)
+    (:domain treechop)
+    (:objects b1 b2 - BranchType)
+    (:init
+        (onTree b1)
+        (onTree b2)
+        (clear b1)
+        (clear b2)
+        (arm_empty)
+        (not (treeDown))
+    )
+    (:goal (and (treeDown)))
+)

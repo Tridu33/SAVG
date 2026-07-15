@@ -1,0 +1,33 @@
+(define (domain nestedvar)
+    (:requirements :strips :typing :equality :derived-predicates :negative-preconditions)
+    (:types ItemType)
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    (:predicates
+        (inX1 ?i - ItemType)
+        (inX2 ?i - ItemType)
+        (x2empty)
+        (vStart)
+        (Vgoal)
+        (x1empty)
+        (h_hasX1)
+    )
+    (:derived (x1empty)
+        (not (exists (?i - ItemType) (inX1 ?i)))
+    )
+    (:derived (h_hasX1)
+        (exists (?i - ItemType) (inX1 ?i))
+    )
+    ;; ##### ACTIONS #####
+    (:action decX1
+        :parameters (?i - ItemType)
+        :precondition (and (inX1 ?i) (x2empty))
+        :effect (and (inX2 ?i) (not (inX1 ?i)) (not (x2empty)))
+    )
+    (:action decX2
+        :parameters (?i - ItemType)
+        :precondition (inX2 ?i)
+        :effect (and (not (inX2 ?i)) (x2empty))
+    )
+    (:formula_for_initial_states (and (x2empty) (exists (?i - ItemType) (inX1 ?i))))
+    (:formula_for_goals (and (x1empty) (x2empty)))
+)

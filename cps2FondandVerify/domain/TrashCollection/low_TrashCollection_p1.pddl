@@ -1,0 +1,12 @@
+(define (problem trashcollection_p1)
+    (:domain trashcollection)
+    (:objects l1 - LocationType t1 - TrashType)
+    (:init
+        (atDump)
+        (truckEmpty)
+        (trashAt l1 t1)
+        (not (inTruck t1))
+        (not (atLoc l1))
+    )
+    (:goal (and (atDump) (allCollected)))
+)

@@ -1,0 +1,6 @@
+f0 = Implies(atDepot,Not(atCustomer)) 
+f1 = Implies(atCustomer,Not(atDepot)) 
+f2 = Implies(fuelOK,Not(fuelLow)) 
+f3 = Implies(fuelLow,Not(fuelOK)) 
+f4 = Implies(Exists([p],inTruck(p)),Not(ForAll([p],delivered(p)))) 
+constraint = And(f0,f1,f2,f3,f4)
