@@ -16,13 +16,15 @@
         :precondition (and  (vStart)  )
         :effect (and (not(vStart)) (not(vGoal)) (not(BlocksCleared)) (not(HRed)) (not(HGreen)) (not(HBlue)) )
     )
-    (:action 0_pickTop_12_10_9
+    (:action 0_pickTop_12_10_9_1_2
             :parameters ()
         :precondition (and (not(vStart)) (not(vGoal)) (not(BlocksCleared)) (not(HRed)) (not(HGreen)) (not(HBlue)) )
         :effect (oneof 
         (and (not(vStart)) (not(vGoal)) (BlocksCleared) (HRed) (not(HGreen)) (not(HBlue)) )
         (and (not(vStart)) (not(vGoal)) (BlocksCleared) (not(HRed)) (HGreen) (not(HBlue)) )
         (and (not(vStart)) (not(vGoal)) (BlocksCleared) (not(HRed)) (not(HGreen)) (HBlue) )
+        (and (not(vStart)) (not(vGoal)) (not(BlocksCleared)) (not(HRed)) (not(HGreen)) (HBlue) )
+        (and (not(vStart)) (not(vGoal)) (not(BlocksCleared)) (not(HRed)) (HGreen) (not(HBlue)) )
         )
     )
     (:action 12_colR_24
@@ -39,5 +41,15 @@
             :parameters ()
         :precondition (and (not(vStart)) (not(vGoal)) (BlocksCleared) (not(HRed)) (not(HGreen)) (HBlue) )
         :effect (and (not(vStart)) (vGoal) (BlocksCleared) (not(HRed)) (not(HGreen)) (not(HBlue)) )
+    )
+    (:action 1_colB_0
+            :parameters ()
+        :precondition (and (not(vStart)) (not(vGoal)) (not(BlocksCleared)) (not(HRed)) (not(HGreen)) (HBlue) )
+        :effect (and (not(vStart)) (not(vGoal)) (not(BlocksCleared)) (not(HRed)) (not(HGreen)) (not(HBlue)) )
+    )
+    (:action 2_colG_0
+            :parameters ()
+        :precondition (and (not(vStart)) (not(vGoal)) (not(BlocksCleared)) (not(HRed)) (HGreen) (not(HBlue)) )
+        :effect (and (not(vStart)) (not(vGoal)) (not(BlocksCleared)) (not(HRed)) (not(HGreen)) (not(HBlue)) )
     )
 )

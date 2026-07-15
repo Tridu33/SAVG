@@ -1,7 +1,0 @@
-digraph G {
-    node [shape=plaintext]
-8->0[label = "vAct"]
-0->1[label = "loadPkg"]
-1->6[label = "deliverPkg"]
-
-}

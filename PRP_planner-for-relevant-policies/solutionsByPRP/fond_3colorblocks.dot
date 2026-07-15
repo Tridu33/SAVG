@@ -9,7 +9,13 @@ digraph G {
 0->12[label = "picktop"]
 0->10[label = "picktop"]
 0->9[label = "picktop"]
+0->1[label = "picktop"]
+0->2[label = "picktop"]
 
 32->0[label = "virtualSourceAct"]
+
+2->0[label = "colg"]
+
+1->0[label = "colb"]
 
 }

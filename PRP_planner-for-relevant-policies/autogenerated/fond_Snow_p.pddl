@@ -5,4 +5,7 @@
     (:init	(vStart)	)  
     (:goal	( and 	(vGoal)	)  )
 
+    (:fairness
+        
     )
+)
