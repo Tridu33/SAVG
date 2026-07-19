@@ -9,7 +9,6 @@
         (atLoc ?l - LocationType)
         (truckEmpty)
         (vStart)
-        (Vgoal)
         (allCollected)
         (h_carrying)
     )

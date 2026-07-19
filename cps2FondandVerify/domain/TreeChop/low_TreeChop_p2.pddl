@@ -1,6 +1,6 @@
 (define (problem treechop_p2)
     (:domain treechop)
-    (:objects b1 b2 - BranchType)
+    (:objects Trunk b1 b2 - BranchType)
     (:init
         (onTree b1)
         (onTree b2)

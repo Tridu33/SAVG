@@ -7,7 +7,7 @@ class T9backtracking:
 
     def letterCombinations(self, digits: str)->list():
         self.answers.clear()
-        if not digits: return []
+        if not digits: return [{}]
         self.backtracking(digits, 0)
         return self.answers
     

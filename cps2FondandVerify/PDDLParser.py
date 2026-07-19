@@ -427,6 +427,9 @@ class PDDLParser:
     def split_predicates_initial(self, group, pos, neg, name, part):
         if not type(group) is list:
             raise Exception('Error with ' + name + part)
+        # Handle double-nesting from parse_problem (group after ':init' pop is [[...]])
+        if len(group) == 1 and type(group[0]) == list and group[0][0] == 'and':
+            group = group[0]
         if group[0] == 'and':
             group.pop(0)
         else:

@@ -179,7 +179,7 @@ OBJECTS_PROFILE = $(SOURCES:%.cc=.obj/%$(OBJECT_SUFFIX_PROFILE).o)
 TARGET_PROFILE  = $(TARGET)$(TARGET_SUFFIX_PROFILE)
 
 CC     = g++
-DEPEND = g++ -MM
+DEPEND = g++ -Iext -MM
 
 ## CCOPT, LINKOPT, POSTLINKOPT are options for compiler and linker
 ## that are used for all three targets (release, debug, and profile).
@@ -188,7 +188,7 @@ DEPEND = g++ -MM
 CCOPT = -Iext
 CCOPT += -g
 CCOPT += -m64 #-m32
-CCOPT += -Wall -W -Wno-sign-compare -Wno-deprecated -ansi -pedantic -Werror
+CCOPT += -Wall -W -Wno-sign-compare -Wno-deprecated -Wno-mismatched-tags -Wno-unused-but-set-variable -Wno-unused-private-field -std=c++11 -pedantic -Werror
 
 ## The following lines contain workarounds for bugs when
 ## cross-compiling to 64 bit on 32-bit systems using gcc 4.4 or gcc

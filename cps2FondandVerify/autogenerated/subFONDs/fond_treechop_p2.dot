@@ -1,7 +1,0 @@
-digraph G {
-    node [shape=plaintext]
-8->0[label = "vAct"]
-0->1[label = "chopBranch"]
-1->0[label = "dropBranch"]
-
-}

@@ -270,7 +270,11 @@ class Simulator():
             if len(fmltrypos) == 0:
                 return True
             for each_pos_fact in fmltrypos:
-                if each_pos_fact in curLowStatePos:
+                if len(each_pos_fact) == 1 and each_pos_fact[0] in self.parser.fond_predicates:
+                    fond_formula = copy.deepcopy(self.parser.fond_predicates[each_pos_fact[0]])
+                    if not self.fmlsatlowState(curLowStateobj, fond_formula, curp):
+                        return False
+                elif each_pos_fact in curLowStatePos:
                     continue
                 else:
                     return False # fmltry: Each pos orthographic fact sentence needs to be in the curLowPos orthographic knowledge base
@@ -281,7 +285,11 @@ class Simulator():
             for each_neg_fact in fmltryneg:
                 # fmltry  Each neg negative text fact sentence is either in the curLowNeg negative text knowledge base or not in the negative text knowledge base (omitted not written out)
                 # Anyway, it can't appear in the orthographic knowledge base curLowStatePos
-                if each_neg_fact not in curLowStatePos:
+                if len(each_neg_fact) == 1 and each_neg_fact[0] in self.parser.fond_predicates:
+                    fond_formula = copy.deepcopy(self.parser.fond_predicates[each_neg_fact[0]])
+                    if self.fmlsatlowState(curLowStateobj, fond_formula, curp):
+                        return False
+                elif each_neg_fact not in curLowStatePos:
                     continue
                 else:
                     return False 
@@ -293,18 +301,21 @@ class Simulator():
             if fmltry[0] == 'or':
                 onceTrueBeTrue = False
                 for each_f in fmltry[1:]:
-                    if each_f[0] == '=':
+                    if each_f[0] == '=' or each_f[0] == '==':
                         if each_f[1] == each_f[2]:
                             onceTrueBeTrue = True
                             return True
-                    elif each_f[0] == 'not': #
-                        if each_f[0][0] == '=': # Equal sign predicates, where there needs to be no equality
-                            if each_f[1] != each_f[2]:
-                                onceTrueBeTrue = True
+                    elif each_f[0] == 'not':
+                        # each_f is like ['not', ['==', 'a', 'b']] or ['not', [pred, args...]]
+                        inner = each_f[1]
+                        if inner[0] == '=' or inner[0] == '==':
+                            # not(= a b) is satisfied when a != b
+                            if inner[1] != inner[2]:
                                 return True
-                        else:# General predicates each_f ['not',[predicates, arguments]] # No longer expand here to handle not(not) nesting # It is best to use recursion, here is not written as a self function, the number of layers is generally not too deep
-                            if each_f[1] not in curLowStatePos:# Negative text Takes the positive part, if not in the positive text, the description is either negative or closed world as negative. "Negative text can be satisfied by the environment to return to truth"
-                                return True 
+                        else:
+                            # General predicate negation: satisfied when the predicate is not in posState
+                            if inner not in curLowStatePos:
+                                return True
                     else: # General predicates , positive literal
                         if each_f in curLowStatePos:
                             return True
@@ -315,6 +326,11 @@ class Simulator():
                 for each in fmltry:
                     if each[0] == 'not':
                         fmltryneg.append(each[1])
+                    elif each[0] == '=' or each[0] == '==':
+                        # equality in 'and': must hold, otherwise the whole and is false
+                        if each[1] != each[2]:
+                            return False
+                        # if equal, skip (tautology, no effect on result)
                     else:
                         fmltrypos.append(each)
             
@@ -452,19 +468,14 @@ class Simulator():
                 else:
                     return False # There is a "combination of variables tentatively tested for a given type" that is not satisfied, one false, and false
             return True# Iterates through all the possibilities, still can not find the unsatisfied explanation, res is still the initial value, the statement is true
+        elif quantifier == 'not':
+            return not self.fmlsatlowState(curLowStateobj, fml[0], curp)
         elif quantifier == 'and':            # others
-            # for task in fml:# for 'and' cnf, one wrong all wrong
-            firstbool = fmltrySATIncurLowState(fml,curLowStatePos,curLowStateNeg)
-            if(firstbool == False): # cnf, one wrong all wrong
-                    return False
-            for eachfml in fml[1:]:
-                boolforeachfml = fmltrySATIncurLowState(eachfml,curLowStatePos,curLowStateNeg) #self.fmlsatlowState(curLowStateobj,eachfml,curp)
-                if(boolforeachfml == False): # cnf, one wrong all wrong
-                    return False
-            return True
+            fml.insert(0, 'and')
+            return fmltrySATIncurLowState(fml, curLowStatePos, curLowStateNeg)
         elif len(fml) == 0:
             # Unary predicates
-            if list(quantifier) in curLowStatePos:
+            if [quantifier] in curLowStatePos:
                 return True
             else:
                 return False
@@ -501,12 +512,22 @@ class Simulator():
         # 'VGoal' means the set of Goal state for every classical planning problem instance
         curp_positive_goals_ALLIN_curLowState_posState = True
         for each_positive_goal in curp.positive_goals: 
-            if each_positive_goal not in curLowState.posState:
+            if len(each_positive_goal) == 1 and each_positive_goal[0] in self.parser.fond_predicates:
+                fond_formula = copy.deepcopy(self.parser.fond_predicates[each_positive_goal[0]])
+                if not self.fmlsatlowState(curLowState, fond_formula, curp):
+                    curp_positive_goals_ALLIN_curLowState_posState = False
+                    break
+            elif each_positive_goal not in curLowState.posState:
                 curp_positive_goals_ALLIN_curLowState_posState = False
                 break
         curp_negative_goals_ALLNOTIN_curLowState_negState = True
         for each_negative_goal in curp.negative_goals:
-            if each_negative_goal in curLowState.posState:
+            if len(each_negative_goal) == 1 and each_negative_goal[0] in self.parser.fond_predicates:
+                fond_formula = copy.deepcopy(self.parser.fond_predicates[each_negative_goal[0]])
+                if self.fmlsatlowState(curLowState, fond_formula, curp):
+                    curp_negative_goals_ALLNOTIN_curLowState_negState = False
+                    break
+            elif each_negative_goal in curLowState.posState:
                 curp_negative_goals_ALLNOTIN_curLowState_negState = False
                 break
         if curp_positive_goals_ALLIN_curLowState_posState == True and curp_negative_goals_ALLNOTIN_curLowState_negState == True: 
@@ -538,10 +559,18 @@ class Simulator():
         isGoalState = True
         # all in will be True,else False
         for curp_neg in curp.negative_goals:
-            if curp_neg not in curLowState.negState:
+            if len(curp_neg) == 1 and curp_neg[0] in self.parser.fond_predicates:
+                fond_formula = copy.deepcopy(self.parser.fond_predicates[curp_neg[0]])
+                if self.fmlsatlowState(curLowState, fond_formula, curp):
+                    isGoalState = False
+            elif curp_neg not in curLowState.negState:
                 isGoalState = False
         for curp_pos in curp.positive_goals:
-            if curp_pos not in curLowState.posState:
+            if len(curp_pos) == 1 and curp_pos[0] in self.parser.fond_predicates:
+                fond_formula = copy.deepcopy(self.parser.fond_predicates[curp_pos[0]])
+                if not self.fmlsatlowState(curLowState, fond_formula, curp):
+                    isGoalState = False
+            elif curp_pos not in curLowState.posState:
                 isGoalState = False
         highState.isGoalState = isGoalState
         return highState
@@ -729,7 +758,15 @@ class Simulator():
                         else:
                             continue
                     else: # normal sentence descripts the positive fact
-                        if fml_list_not_in_LowState_nestedlist(each_posf, oldLowState.posState):
+                        # If this is a derived (fond) predicate, evaluate the formula
+                        # instead of looking it up in posState (derived predicates are
+                        # never stored as facts).
+                        if len(each_posf) == 1 and each_posf[0] in self.parser.fond_predicates:
+                            fond_formula = copy.deepcopy(self.parser.fond_predicates[each_posf[0]])
+                            if not self.fmlsatlowState(oldLowState, fond_formula, p):
+                                default_all_pos_in_pos = False
+                                break
+                        elif fml_list_not_in_LowState_nestedlist(each_posf, oldLowState.posState):
                             default_all_pos_in_pos = False #  As long as there is a each_posf does not return False at postState
                             break
                         else:
@@ -749,7 +786,15 @@ class Simulator():
                             default_all_pos_in_pos = False # You want the variable to be specialized the_diff_var_specific_obj not equal to the object the_var_specific_obj in the real environment, but equal and returns false
                             break
                     else:# normal sentence descripts the positive fact
-                        if fml_list_in_LowState_nestedlist(each_negf, oldLowState.posState):
+                        # If this is a derived (fond) predicate, evaluate the formula
+                        # -- a negated derived predicate is satisfied when the formula
+                        #    evaluates to False.
+                        if len(each_negf) == 1 and each_negf[0] in self.parser.fond_predicates:
+                            fond_formula = copy.deepcopy(self.parser.fond_predicates[each_negf[0]])
+                            if self.fmlsatlowState(oldLowState, fond_formula, p):
+                                default_all_neg_not_in_pos = False
+                                break
+                        elif fml_list_in_LowState_nestedlist(each_negf, oldLowState.posState):
                             default_all_neg_not_in_pos = False #  As long as there is a each_negf return False in posState
                             break
                         else:

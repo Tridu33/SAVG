@@ -1,6 +1,0 @@
-(define (problem nestedvar_p3)
-    (:domain nestedvar)
-    (:objects i1 i2 i3 i4 - ItemType)
-    (:init (inX1 i1) (inX1 i2) (inX1 i3) (inX1 i4) (x2empty))
-    (:goal (and (x1empty) (x2empty)))
-)

@@ -82,7 +82,7 @@ DEPEND = g++ -MM
 CCOPT  =
 CCOPT += -m64 #-m32
 CCOPT += -g
-CCOPT += -Wall -W -Wno-sign-compare -Wno-deprecated -ansi -pedantic -Werror
+CCOPT += -Wall -W -Wno-sign-compare -Wno-deprecated -std=c++11 -pedantic -Werror
 
 ## The following lines contain workarounds for bugs when
 ## cross-compiling to 64 bit on 32-bit systems using gcc 4.4 or gcc

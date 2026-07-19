@@ -10,19 +10,25 @@ def PossVerfication(parser,whole_fond):
     global_var_int = 0
     myVar2Types = dict()
     for each_act in parser.actions:
-        FOL_formula_cnf_right = "Exists([" # "v_1,v_2,...,v_n], FOL_CNF(v_1,v_2,...,v_n))"
+        has_vars = False
+        FOL_formula_cnf_right = ""
         each_v_i2act_parameters = dict()
         for each_vars in each_act.parameters:
             for each_v_i in each_vars[0:-1]:
                 each_v_i_str = 'v'+str(global_var_int)
-                FOL_formula_cnf_right += each_v_i_str + ','
+                if not has_vars:
+                    FOL_formula_cnf_right = "Exists([" + each_v_i_str
+                    has_vars = True
+                else:
+                    FOL_formula_cnf_right += ',' + each_v_i_str
                 each_v_i2act_parameters[each_v_i_str] = each_v_i
                 global_var_int+=1
         act_parameters2each_v_i = get_invert_dict(each_v_i2act_parameters)
         # act_parameters2each_v_i = list(inverted(each_v_i2act_parameters))
-        if FOL_formula_cnf_right[-1] == ',':
-            FOL_formula_cnf_right = FOL_formula_cnf_right[0:-1]
-        FOL_formula_cnf_right += '],And('
+        if has_vars:
+            FOL_formula_cnf_right += '],And('
+        else:
+            FOL_formula_cnf_right = 'And('
         # get the positive & negative precondition
         for each_pos_pre_f in each_act.positive_preconditions:
             if len(each_pos_pre_f)==3 and (each_pos_pre_f[0] == '==' or each_pos_pre_f[0] == '='):
@@ -70,7 +76,8 @@ def PossVerfication(parser,whole_fond):
             FOL_formula_cnf_right = FOL_formula_cnf_right[0:-1]
         FOL_formula_cnf_right += ')' # And(
 
-        FOL_formula_cnf_right += ')' # "Exists(["
+        if has_vars:
+            FOL_formula_cnf_right += ')' # "Exists(["
         LowActs2Poss[each_act.name] = FOL_formula_cnf_right
         # get myVar2Types:Type for spesific 'v*'
         for each_var_list in each_act.parameters:

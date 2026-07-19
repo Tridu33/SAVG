@@ -1,5 +1,12 @@
 #! /bin/bash
 
+# Unset environment variables that interfere with header search paths.
+# CPLUS_INCLUDE_PATH and C_INCLUDE_PATH can cause system C headers to be
+# found before libc++ wrapper headers, breaking compilation on macOS.
+unset CPLUS_INCLUDE_PATH
+unset C_INCLUDE_PATH
+unset CPATH
+
 cd preprocess
 make "$@" || exit 1
 cd ..

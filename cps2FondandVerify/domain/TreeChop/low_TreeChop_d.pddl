@@ -11,7 +11,7 @@
         (arm_empty)
         (holding ?b - BranchType)
         (vStart)
-        (Vgoal)
+        (VGoal)
         (allBranchesChopped)
         (H)
     )
@@ -21,11 +21,14 @@
     (:derived (H)
         (exists (?b - BranchType) (holding ?b))
     )
+    (:derived (vGoal)
+        (treeDown)
+    )
     ;; ##### ACTIONS #####
     (:action chopBranch
         :parameters (?b - BranchType)
         :precondition (and (onTree ?b) (clear ?b) (arm_empty))
-        :effect (and (holding ?b) (not (onTree ?b)) (not (clear ?b)) (not (arm_empty)))
+        :effect (and (holding ?b) (not (arm_empty)))
     )
     (:action dropBranch
         :parameters (?b - BranchType)

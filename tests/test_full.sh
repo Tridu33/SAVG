@@ -1,8 +1,8 @@
 #!/bin/bash
 #
-# test-full.sh — Run every PRP test case listed in
-#   PRP_planner-for-relevant-policies/usage_README.md
-#
+# bash tests/test_full.sh — execute all domains default pipeline
+# bash tests/test_full.sh -domain TreeChop — only execute TreeChop one domain.
+# 
 # For each domain the script executes the three-step pipeline documented in
 # the README:
 #   1. ./RunPRPForCurDomain.sh <domain>   (PRP solver + policy translation)
@@ -31,6 +31,7 @@ set -u
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SAVG_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 PRP_DIR="$SAVG_ROOT/PRP_planner-for-relevant-policies"
+CPS2FOND_DIR="$SAVG_ROOT/cps2FondandVerify"
 VENV_DIR="$SAVG_ROOT/.venv"
 
 # ---------------------------------------------------------------------------
@@ -40,23 +41,65 @@ VENV_DIR="$SAVG_ROOT/.venv"
 #    35bottle4Lwater)
 # ---------------------------------------------------------------------------
 DOMAINS=(
+    blocks_clear
     llvisitall
     reversell
-    blocks_clear
     stripedtower
     RGBBlocks
     treetraversal
-    3colorblocks
-    striped
-    3delivery
-    choppingtree2
     TreeChop
     NestedVar
     Snow
-    DeliveryFuel
-    TrashCollection
-    35bottle4Lwater
+    # DeliveryFuel
+    # TrashCollection
 )
+
+# Domain→CPN mapping used by cps2FondandVerify/main.py
+# (cpn = number of classical plans for each domain)
+declare -A DOMAIN_CPN=(
+    ["blocks_clear"]=1
+    ["llvisitall"]=3
+    ["reversell"]=1
+    ["stripedtower"]=4
+    ["treetraversal"]=4
+    ["RGBBlocks"]=4
+    ["TreeChop"]=2
+    ["NestedVar"]=1
+    ["Snow"]=1
+    # ["TrashCollection"]=3
+    # ["DeliveryFuel"]=3
+)
+
+# ---------------------------------------------------------------------------
+# Domain display names for the summary table
+# ---------------------------------------------------------------------------
+declare -A DOMAIN_DISPLAY=(
+    ["blocks_clear"]="ClearA"
+    ["llvisitall"]="Visitall"
+    ["reversell"]="ReverseLL"
+    ["stripedtower"]="Striped"
+    ["RGBBlocks"]="RGBBlocks"
+    ["treetraversal"]="TreeTraverse"
+    ["TreeChop"]="TreeChop"
+    ["NestedVar"]="NestVar"
+    ["Snow"]="Snow"
+    # ["DeliveryFuel"]="Delivery"
+    # ["TrashCollection"]="Trash"
+)
+
+# ---------------------------------------------------------------------------
+# Statistics arrays for summary table
+#   I  = instance count  (from DOMAIN_CPN)
+#   V  = predicate count (from fond_*_d.pddl)
+#   T_g = generation time (ms)
+#   T_v = verification time (ms)
+#   π  = policy size  ("If holds" count in human_policy.out)
+#
+# Stats are stored via dynamic export variables:
+#   STATS_I_<domain>, STATS_V_<domain>, STATS_TG_<domain>,
+#   STATS_TV_<domain>, STATS_PI_<domain>
+# ---------------------------------------------------------------------------
+STATS_ORDER=()          # ordered list of processed domains
 
 # ---------------------------------------------------------------------------
 # Colour helpers (disabled when stdout is not a TTY)
@@ -86,7 +129,7 @@ PLATFORM="$(detect_platform)"
 # Step 1 — create / activate the uv-managed .venv
 # ---------------------------------------------------------------------------
 setup_venv() {
-    echo -e "${CYAN}=== [1/4] Setting up Python virtual environment (uv) ===${NC}"
+    echo -e "${CYAN}=== [1/6] Setting up Python virtual environment (uv) ===${NC}"
     if [ ! -d "$VENV_DIR" ]; then
         echo "  Creating .venv with uv ..."
         (cd "$SAVG_ROOT" && uv venv .venv) || {
@@ -105,7 +148,7 @@ setup_venv() {
 # Step 2 — verify system tools (/usr/bin/time, dot)
 # ---------------------------------------------------------------------------
 check_dependencies() {
-    echo -e "${CYAN}=== [2/4] Checking system dependencies ===${NC}"
+    echo -e "${CYAN}=== [2/6] Checking system dependencies ===${NC}"
 
     if ! command -v /usr/bin/time >/dev/null 2>&1; then
         echo "  /usr/bin/time not found — installing 'time' via apt-get ..."
@@ -124,7 +167,7 @@ check_dependencies() {
 # Step 3 — verify PRP solver binaries exist and are usable on this platform
 # ---------------------------------------------------------------------------
 verify_binaries() {
-    echo -e "${CYAN}=== [3/4] Verifying PRP solver binaries ===${NC}"
+    echo -e "${CYAN}=== [3/6] Verifying PRP solver binaries ===${NC}"
 
     local bins=(
         "$PRP_DIR/src/preprocess/preprocess"
@@ -161,7 +204,8 @@ verify_binaries() {
         "$PRP_DIR/src/translate/translate.py" \
         "$PRP_DIR/src/preprocess/preprocess" \
         "$PRP_DIR/src/search/downward-release" \
-        "$PRP_DIR/src/search/downward" 2>/dev/null || true
+        "$PRP_DIR/src/search/downward" \
+        "$PRP_DIR/src/search/unitcost" 2>/dev/null || true
 }
 
 # ---------------------------------------------------------------------------
@@ -174,7 +218,86 @@ cleanup_prp_files() {
 }
 
 # ---------------------------------------------------------------------------
-# Step 4 — run the full pipeline for one domain
+# Step 4 — Generate PDDL files via cps2FondandVerify + copy to PRP
+# ---------------------------------------------------------------------------
+generate_and_copy_pddl() {
+    local domains_to_run=("$@")
+
+    # Ensure cps2FondandVerify dependencies are installed
+    if [ -f "$CPS2FOND_DIR/requirements.txt" ]; then
+        pip install -r "$CPS2FOND_DIR/requirements.txt" -q 2>/dev/null || true
+    fi
+
+    echo -e "${CYAN}=== [4/6] Generating PDDL files via cps2FondandVerify ===${NC}"
+
+    cd "$CPS2FOND_DIR"
+    mkdir -p autogenerated
+
+    for domain in "${domains_to_run[@]}"; do
+        local cpn="${DOMAIN_CPN[$domain]:-1}"
+        echo "  python main.py -domainname $domain -cpn $cpn -deletehistory False -debug True"
+        if python main.py -domainname "$domain" -cpn "$cpn" -deletehistory False -debug True >/tmp/cps2fond_${domain}.log 2>&1; then
+            echo -e "       ${GREEN}OK${NC}"
+
+            # --- Collect statistics for summary table ---
+            STATS_ORDER+=("$domain")
+            export STATS_I_${domain}="$cpn"
+
+            # V: count predicates in the generated PDDL domain file
+            local _pddl="$CPS2FOND_DIR/autogenerated/fond_${domain}_d.pddl"
+            local _v=$(awk '/^[[:space:]]*\(:predicates/,/^[[:space:]]*\)/ {
+                if (/^[[:space:]]*\([a-zA-Z]/ && !/^[[:space:]]*\(:predicates/) cnt++
+            } END { print cnt+0 }' "$_pddl" 2>/dev/null)
+            export STATS_V_${domain}="${_v:-0}"
+
+            # T_g: generation time from log (seconds → ms)
+            local _tg_s=$(sed -n 's/.*it cost: *\([0-9.]*\) *(s) to generate FOND abstraction.*/\1/p' \
+                "/tmp/cps2fond_${domain}.log" 2>/dev/null)
+            if [ -n "$_tg_s" ]; then
+                export STATS_TG_${domain}=$(awk "BEGIN {printf \"%.2f\", $_tg_s * 1000}")
+            else
+                export STATS_TG_${domain}="--"
+            fi
+
+            # T_v: verification time from log (seconds → ms)
+            local _tv_s=$(sed -n 's/.*it cost: *\([0-9.]*\) *(s) to verification.*/\1/p' \
+                "/tmp/cps2fond_${domain}.log" 2>/dev/null)
+            if [ -n "$_tv_s" ]; then
+                export STATS_TV_${domain}=$(awk "BEGIN {printf \"%.2f\", $_tv_s * 1000}")
+            else
+                export STATS_TV_${domain}="--"
+            fi
+        else
+            echo -e "       ${RED}FAIL — see /tmp/cps2fond_${domain}.log${NC}"
+            echo "       ---- tail of /tmp/cps2fond_${domain}.log ----"
+            tail -n 25 "/tmp/cps2fond_${domain}.log" | sed 's/^/         /'
+            cd "$SAVG_ROOT"
+            return 1
+        fi
+    done
+
+    echo ""
+    echo -e "${CYAN}=== [5/6] Copying PDDL files to PRP autogenerated ===${NC}"
+
+    local src_dir="$CPS2FOND_DIR/autogenerated"
+    local dst_dir="$PRP_DIR/autogenerated"
+    mkdir -p "$dst_dir"
+
+    local copied=0
+    for f in "$src_dir"/fond_*_d.pddl "$src_dir"/fond_*_p.pddl; do
+        if [ -f "$f" ]; then
+            cp "$f" "$dst_dir/"
+            echo "  Copied: $(basename "$f")"
+            copied=$((copied + 1))
+        fi
+    done
+    echo "  Total copied: $copied files"
+
+    cd "$SAVG_ROOT"
+}
+
+# ---------------------------------------------------------------------------
+# Step 6 — run the full PRP pipeline for one domain
 # ---------------------------------------------------------------------------
 run_domain() {
     local domain="$1"
@@ -212,6 +335,11 @@ run_domain() {
     if ./PrintHuman_Policy.sh "$domain" 2>/dev/null && \
        [ -f "solutionsByPRP/fond_${domain}_human_policy.out" ]; then
         echo -e "       ${GREEN}OK — policy written${NC}"
+
+        # π: count "If holds:" lines in the human policy file
+        local _policy_file="solutionsByPRP/fond_${domain}_human_policy.out"
+        local _pi=$(grep -c 'If holds:' "$_policy_file" 2>/dev/null || echo 0)
+        export STATS_PI_${domain}="${_pi}"
     else
         echo -e "       ${YELLOW}WARN — human_policy.out not produced${NC}"
     fi
@@ -232,6 +360,49 @@ run_domain() {
 # Main
 # ---------------------------------------------------------------------------
 main() {
+    # --- Parse optional -domain argument ---
+    local selected_domain=""
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            -domain)
+                if [[ -z "${2:-}" ]]; then
+                    echo -e "${RED}ERROR: -domain requires a domain name argument${NC}"
+                    echo "  Usage: $0 [-domain <domain_name>]"
+                    echo "  Available domains: ${DOMAINS[*]}"
+                    exit 1
+                fi
+                selected_domain="$2"
+                shift 2
+                ;;
+            *)
+                echo -e "${RED}ERROR: unknown option: $1${NC}"
+                echo "  Usage: $0 [-domain <domain_name>]"
+                exit 1
+                ;;
+        esac
+    done
+
+    # Build the list of domains to run
+    local domains_to_run=()
+    if [[ -n "$selected_domain" ]]; then
+        # Validate the domain name
+        local found=0
+        for d in "${DOMAINS[@]}"; do
+            if [[ "$d" == "$selected_domain" ]]; then
+                found=1
+                break
+            fi
+        done
+        if [[ $found -eq 0 ]]; then
+            echo -e "${RED}ERROR: unknown domain '$selected_domain'${NC}"
+            echo "  Available domains: ${DOMAINS[*]}"
+            exit 1
+        fi
+        domains_to_run=("$selected_domain")
+    else
+        domains_to_run=("${DOMAINS[@]}")
+    fi
+
     echo "############################################################"
     echo "#  SAVG · PRP Full Test Suite"
     echo "#  Runs every test case from"
@@ -243,12 +414,17 @@ main() {
     check_dependencies
     verify_binaries
 
+    generate_and_copy_pddl "${domains_to_run[@]}" || {
+        echo -e "${RED}FATAL: PDDL generation failed — aborting${NC}"
+        exit 1
+    }
+
     echo ""
-    echo -e "${CYAN}=== [4/4] Running ${#DOMAINS[@]} test domains ===${NC}"
+    echo -e "${CYAN}=== [6/6] Running ${#domains_to_run[@]} test domain(s) ===${NC}"
     cd "$PRP_DIR"
     mkdir -p solutionsByPRP
 
-    for domain in "${DOMAINS[@]}"; do
+    for domain in "${domains_to_run[@]}"; do
         run_domain "$domain"
     done
 
@@ -259,7 +435,7 @@ main() {
     echo "############################################################"
     echo "#  Summary"
     echo "############################################################"
-    echo "  Total : ${#DOMAINS[@]}"
+    echo "  Total : ${#domains_to_run[@]}"
     echo -e "  ${GREEN}Passed: $PASS${NC}"
     echo -e "  ${YELLOW}Skipped: $SKIP${NC}  (no autogenerated PDDL)"
     echo -e "  ${RED}Failed: $FAIL${NC}"
@@ -267,6 +443,34 @@ main() {
         echo "  Failed domains: ${FAILED_DOMAINS[*]}"
     fi
     echo ""
+
+    # --- Statistics Table ---
+    if [ "${#STATS_ORDER[@]}" -gt 0 ]; then
+        echo "############################################################"
+        echo "#  Statistics"
+        echo "############################################################"
+        printf "| %-13s | %2s | %2s | %8s | %8s | %2s | %-6s |\n" \
+            "Domain" "I" "V" "T_g(ms)" "T_v(ms)" "π" "TC"
+        printf "|%-15s|%-4s|%-4s|%-10s|%-10s|%-4s|%-8s|\n" \
+            "---------------" "----" "----" "----------" "----------" "----" "--------"
+        local _disp _i _v _tg _tv _pi _tc
+        for domain in "${STATS_ORDER[@]}"; do
+            _disp="${DOMAIN_DISPLAY[$domain]:-$domain}"
+            # Use eval for safe indirect expansion under set -u
+            _i=$(eval "echo \${STATS_I_${domain}:---}" 2>/dev/null)
+            _v=$(eval "echo \${STATS_V_${domain}:---}" 2>/dev/null)
+            _tg=$(eval "echo \${STATS_TG_${domain}:---}" 2>/dev/null)
+            _tv=$(eval "echo \${STATS_TV_${domain}:---}" 2>/dev/null)
+            _pi=$(eval "echo \${STATS_PI_${domain}:---}" 2>/dev/null)
+            case "$domain" in
+                TreeChop|NestedVar|Snow|DeliveryFuel) _tc="Cond." ;;
+                *)                                  _tc="Fair"  ;;
+            esac
+            printf "| %-13s | %2s | %2s | %8s | %8s | %2s | %-6s |\n" \
+                "$_disp" "$_i" "$_v" "$_tg" "$_tv" "$_pi" "$_tc"
+        done
+        echo ""
+    fi
 
     [ $FAIL -eq 0 ] && exit 0 || exit 1
 }

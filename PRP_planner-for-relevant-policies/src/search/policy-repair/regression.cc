@@ -21,7 +21,7 @@ string RegressionStep::get_name() {
     if (is_goal)
         return "goal / SC / d=0";
     else
-        return op->get_nondet_name() + " / " + (is_sc ? "SC" : "NSC") + " / d=" + static_cast<ostringstream*>( &(ostringstream() << distance) )->str();
+        return op->get_nondet_name() + " / " + (is_sc ? "SC" : "NSC") + " / d=" + std::to_string(distance);
 }
 
 void NondetDeadend::dump() const {
