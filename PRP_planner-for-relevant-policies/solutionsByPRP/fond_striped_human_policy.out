@@ -18,27 +18,3 @@ Mapping:
   var7:1	<-> 	 not(vstart())
 
 Policy:
-
-If holds: vgoal()
-Execute: goal / SC / d=0
-
-If holds: not(vstart())/not(h_onebinbox())/not(h_onebrinbox())/h_onerinbox()/holdingb()/not(holdingr())/h()/not(vgoal())
-Execute: 13_putbinbox_120  / SC / d=1
-
-If holds: not(vstart())/not(h_onebinbox())/not(h_onebrinbox())/h_onerinbox()/not(holdingb())/not(holdingr())/not(h())/not(vgoal())
-Execute: 8_picktop_13_14  / SC / d=2
-
-If holds: not(vstart())/not(h_onebinbox())/not(h_onebrinbox())/not(h_onerinbox())/not(holdingb())/holdingr()/h()/not(vgoal())
-Execute: 6_putrinbox_8  / SC / d=3
-
-If holds: not(vstart())/not(h_onebinbox())/not(h_onebrinbox())/h_onerinbox()/not(holdingb())/holdingr()/h()/not(vgoal())
-Execute: 14_putraside_8  / SC / d=3
-
-If holds: not(vstart())/not(h_onebinbox())/not(h_onebrinbox())/not(h_onerinbox())/not(holdingb())/not(holdingr())/not(h())/not(vgoal())
-Execute: 0_picktop_6  / SC / d=4
-
-If holds: vstart()
-Execute: 128_virtual_source_act_0  / SC / d=5
-
-FSAP:
-

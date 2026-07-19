@@ -11,10 +11,10 @@ If holds: vgoal()
 Execute: goal / SC / d=0
 
 If holds: not(vstart())
-Execute: patched_goal_act  / SC / d=1
+Execute: patched_goal_act  / NSC / d=1
 
 If holds: vstart()
-Execute: 16_virtual_source_act_0  / SC / d=2
+Execute: 16_virtual_source_act_0  / NSC / d=2
 
 FSAP:
 

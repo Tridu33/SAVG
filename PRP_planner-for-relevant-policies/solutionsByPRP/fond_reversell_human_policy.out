@@ -17,16 +17,13 @@ If holds: vgoal()
 Execute: goal / SC / d=0
 
 If holds: not(vstart())/not(allvisited())/not(h_curinserted())/h_curispophead1()/not(vgoal())
-Execute: 2_insert2_1_13  / SC / d=1
+Execute: 2_insert2_1_13  / NSC / d=1
 
 If holds: not(vstart())/not(allvisited())/not(h_curinserted())/not(h_curispophead1())/not(vgoal())
-Execute: 0_pophead1_2  / SC / d=2
+Execute: 0_pophead1_2  / NSC / d=2
 
 If holds: vstart()
-Execute: 16_virtual_source_act_0  / SC / d=3
-
-If holds: not(vstart())/not(allvisited())/h_curinserted()/not(h_curispophead1())/not(vgoal())
-Execute: 1_gethead1_0  / SC / d=3
+Execute: 16_virtual_source_act_0  / NSC / d=3
 
 FSAP:
 

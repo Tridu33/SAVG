@@ -73,16 +73,21 @@ TARGET_PROFILE  = $(TARGET)$(TARGET_SUFFIX_PROFILE)
 
 
 CC     = g++
-DEPEND = g++ -MM
+DEPEND = g++ -MM $(CCOPT)
 
 ## CCOPT, LINKOPT, POSTLINKOPT are options for compiler and linker
 ## that are used for all three targets (release, debug, and profile).
 ## (POSTLINKOPT are options that appear *after* all object files.)
 
 CCOPT  =
-CCOPT += -m64 #-m32
 CCOPT += -g
-CCOPT += -Wall -W -Wno-sign-compare -Wno-deprecated -ansi -pedantic -Werror
+CCOPT += -Wall -W -Wno-sign-compare -Wno-deprecated -std=c++11 -pedantic
+
+ifeq ($(OS), osx)
+# Work around missing c++/v1 symlink in recent Xcode CLT
+SDK_PATH := $(shell xcrun --show-sdk-path 2>/dev/null || echo /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk)
+CCOPT += -cxx-isystem $(SDK_PATH)/usr/include/c++/v1
+endif
 
 ## The following lines contain workarounds for bugs when
 ## cross-compiling to 64 bit on 32-bit systems using gcc 4.4 or gcc
@@ -107,7 +112,6 @@ ifdef HAVE_GCC_4_6
 endif
 
 LINKOPT  =
-LINKOPT += -m64 #-m32
 LINKOPT += -g
 
 POSTLINKOPT =
@@ -200,7 +204,7 @@ Makefile.depend: $(SOURCES) $(HEADERS)
 	for source in $(SOURCES) ; do \
 	    $(DEPEND) $$source > Makefile.temp0; \
 	    objfile=$${source%%.cc}.o; \
-	    sed -i -e "s@^[^:]*:@$$objfile:@" Makefile.temp0; \
+	    sed -i "" -e "s@^[^:]*:@$$objfile:@" Makefile.temp0; \
 	    cat Makefile.temp0 >> Makefile.temp; \
 	done
 	rm -f Makefile.temp0 Makefile.depend

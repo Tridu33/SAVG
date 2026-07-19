@@ -3,25 +3,10 @@ If holds: var6:0
 Execute: goal / SC / d=0
 
 If holds: var7:1 var0:1 var2:0 var5:1 var3:1 var1:1 var4:0 var6:1
-Execute: 34_extract_84  / SC / d=1
-
-If holds: var7:1 var0:1 var2:1 var5:1 var3:1 var1:1 var4:0 var6:1
-Execute: 2_extract_84  / SC / d=1
+Execute: 34_extract_84  / NSC / d=1
 
 If holds: var7:1 var0:1 var2:0 var5:1 var3:0 var1:1 var4:1 var6:1
-Execute: 36_rootiscur2q_34_35  / SC / d=2
-
-If holds: var7:1 var0:1 var2:1 var5:1 var3:1 var1:1 var4:1 var6:1
-Execute: 0_extract_2_1_0  / SC / d=2
+Execute: 36_rootiscur2q_34_35  / NSC / d=2
 
 If holds: var7:0
-Execute: 128_virtual_source_act_36  / SC / d=3
-
-If holds: var7:1 var0:1 var2:0 var5:1 var3:1 var1:1 var4:1 var6:1
-Execute: 32_extract_0_1  / SC / d=3
-
-If holds: var7:1 var0:1 var2:1 var5:1 var3:1 var1:0 var4:1 var6:1
-Execute: 1_pushkids2q_0  / SC / d=3
-
-If holds: var7:1 var0:1 var2:0 var5:1 var3:1 var1:0 var4:0 var6:1
-Execute: 35_pushkids2qone_32  / SC / d=4
+Execute: 128_virtual_source_act_36  / NSC / d=3

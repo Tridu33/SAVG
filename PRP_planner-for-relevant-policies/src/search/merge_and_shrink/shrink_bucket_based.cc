@@ -71,7 +71,7 @@ void ShrinkBucketBased::compute_abstraction(
                 }
             }
             EquivalenceClass &group = equiv_relation.back();
-            group.insert(group.begin(), bucket.begin(), bucket.end());
+            group.insert_after(group.before_begin(), bucket.begin(), bucket.end());
         } else {
             // Complicated case: must combine until bucket budget is met.
             // First create singleton groups.
@@ -90,7 +90,7 @@ void ShrinkBucketBased::compute_abstraction(
                     // TODO: Use g_rng once the PDB code has been merged.
                     pos2 = static_cast<size_t>(rand()) % groups.size();
                 } while (pos1 == pos2);
-                groups[pos1].splice(groups[pos1].begin(), groups[pos2]);
+                groups[pos1].splice_after(groups[pos1].before_begin(), groups[pos2]);
                 swap(groups[pos2], groups.back());
                 assert(groups.back().empty());
                 groups.pop_back();

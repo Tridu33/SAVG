@@ -3,7 +3,7 @@
 
 #include <string>
 #include <vector>
-#include <ext/slist>
+#include <forward_list>
 
 class Abstraction;
 class OptionParser;
@@ -24,7 +24,7 @@ protected:
        This is used to remove unreachable and irrelevant states.
     */
 
-    typedef __gnu_cxx::slist<AbstractStateRef> EquivalenceClass;
+    typedef std::forward_list<AbstractStateRef> EquivalenceClass;
     typedef std::vector<EquivalenceClass> EquivalenceRelation;
 public:
     // HACK/TODO: The following method would usually be protected, but

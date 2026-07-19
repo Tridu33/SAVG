@@ -23,28 +23,13 @@ If holds: vgoal()
 Execute: goal / SC / d=0
 
 If holds: not(vstart())/not(allvisited())/curisroot()/not(somenodesmissed())/not(lenis0())/not(curhasunpushedkids())/lenis1()/not(vgoal())
-Execute: 34_extract_84  / SC / d=1
-
-If holds: not(vstart())/not(allvisited())/not(curisroot())/not(somenodesmissed())/not(lenis0())/not(curhasunpushedkids())/lenis1()/not(vgoal())
-Execute: 2_extract_84  / SC / d=1
+Execute: 34_extract_84  / NSC / d=1
 
 If holds: not(vstart())/not(allvisited())/curisroot()/not(somenodesmissed())/lenis0()/not(curhasunpushedkids())/not(lenis1())/not(vgoal())
-Execute: 36_rootiscur2q_34_35  / SC / d=2
-
-If holds: not(vstart())/not(allvisited())/not(curisroot())/not(somenodesmissed())/not(lenis0())/not(curhasunpushedkids())/not(lenis1())/not(vgoal())
-Execute: 0_extract_2_1_0  / SC / d=2
+Execute: 36_rootiscur2q_34_35  / NSC / d=2
 
 If holds: vstart()
-Execute: 128_virtual_source_act_36  / SC / d=3
-
-If holds: not(vstart())/not(allvisited())/curisroot()/not(somenodesmissed())/not(lenis0())/not(curhasunpushedkids())/not(lenis1())/not(vgoal())
-Execute: 32_extract_0_1  / SC / d=3
-
-If holds: not(vstart())/not(allvisited())/not(curisroot())/not(somenodesmissed())/not(lenis0())/curhasunpushedkids()/not(lenis1())/not(vgoal())
-Execute: 1_pushkids2q_0  / SC / d=3
-
-If holds: not(vstart())/not(allvisited())/curisroot()/not(somenodesmissed())/not(lenis0())/curhasunpushedkids()/lenis1()/not(vgoal())
-Execute: 35_pushkids2qone_32  / SC / d=4
+Execute: 128_virtual_source_act_36  / NSC / d=3
 
 FSAP:
 

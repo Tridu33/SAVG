@@ -2,10 +2,6 @@ digraph G {
     node [shape=plaintext]
 12->24[label = "colr"]
 
-9->24[label = "colb"]
-
-10->24[label = "colg"]
-
 0->12[label = "picktop"]
 0->10[label = "picktop"]
 0->9[label = "picktop"]
@@ -13,9 +9,5 @@ digraph G {
 0->2[label = "picktop"]
 
 32->0[label = "virtualSourceAct"]
-
-2->0[label = "colg"]
-
-1->0[label = "colb"]
 
 }

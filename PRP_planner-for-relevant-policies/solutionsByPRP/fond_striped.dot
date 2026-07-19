@@ -1,16 +1,3 @@
 digraph G {
     node [shape=plaintext]
-13->120[label = "putbinbox"]
-
-8->13[label = "picktop"]
-8->14[label = "picktop"]
-
-6->8[label = "putrinbox"]
-
-14->8[label = "putraside"]
-
-0->6[label = "picktop"]
-
-128->0[label = "virtualSourceAct"]
-
 }

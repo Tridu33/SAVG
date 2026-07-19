@@ -15,13 +15,13 @@ If holds: vgoal()
 Execute: goal / SC / d=0
 
 If holds: not(vstart())/not(alldelivered())/h_carrying()/not(vgoal())
-Execute: 1_deliverpkg_6_0  / SC / d=1
+Execute: 1_deliverpkg_6_0  / NSC / d=1
 
 If holds: not(vstart())/not(alldelivered())/not(h_carrying())/not(vgoal())
-Execute: 0_loadpkg_1  / SC / d=2
+Execute: 0_loadpkg_1  / NSC / d=2
 
 If holds: vstart()
-Execute: 8_virtual_source_act_0  / SC / d=3
+Execute: 8_virtual_source_act_0  / NSC / d=3
 
 FSAP:
 

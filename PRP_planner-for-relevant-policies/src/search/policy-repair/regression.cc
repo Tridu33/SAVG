@@ -1,5 +1,6 @@
 #include "regression.h"
 #include "policy.h"
+#include <sstream>
 
 void RegressionStep::dump() const {
     cout << "Regression Step (" << this << ")" << endl;
@@ -20,8 +21,10 @@ void RegressionStep::dump() const {
 string RegressionStep::get_name() {
     if (is_goal)
         return "goal / SC / d=0";
-    else
-        return op->get_nondet_name() + " / " + (is_sc ? "SC" : "NSC") + " / d=" + static_cast<ostringstream*>( &(ostringstream() << distance) )->str();
+    else {
+        std::ostringstream oss; oss << distance;
+        return op->get_nondet_name() + " / " + (is_sc ? "SC" : "NSC") + " / d=" + oss.str();
+    }
 }
 
 void NondetDeadend::dump() const {

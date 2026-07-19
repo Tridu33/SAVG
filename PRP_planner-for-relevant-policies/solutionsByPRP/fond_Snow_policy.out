@@ -3,7 +3,7 @@ If holds: var0:0
 Execute: goal / SC / d=0
 
 If holds: var1:1
-Execute: patched_goal_act  / SC / d=1
+Execute: patched_goal_act  / NSC / d=1
 
 If holds: var1:0
-Execute: 16_virtual_source_act_0  / SC / d=2
+Execute: 16_virtual_source_act_0  / NSC / d=2

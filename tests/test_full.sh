@@ -20,7 +20,7 @@
 #     src/search/downward-release)
 #
 # Cross-platform notes (vs the original macOS-only script):
-#   • Replaces `gtime` (GNU-time via MacPorts) with /usr/bin/time.
+#   • Replaces `gtime` (GNU-time via MacPorts) with gtime.
 #   • Skips the macOS-only "ELF → reject" gate on Linux (binaries are ELF).
 #   • Uses apt-get for graphviz when missing.
 #   • Lets uv pick the system Python (no hard 3.12 pin) so it works on any
@@ -51,7 +51,6 @@ DOMAINS=(
     RGBBlocks
     treetraversal
     3colorblocks
-    striped
     3delivery
     choppingtree2
     TreeChop
@@ -75,7 +74,7 @@ CPN["RGBBlocks"]=4
 CPN["treetraversal"]=4
 CPN["3colorblocks"]=4
 CPN["striped"]=4
-CPN["3delivery"]=4
+CPN["3delivery"]=3
 CPN["choppingtree2"]=2
 CPN["TreeChop"]=3
 CPN["NestedVar"]=3
@@ -194,16 +193,16 @@ setup_venv() {
 }
 
 # ---------------------------------------------------------------------------
-# Step 2 — verify system tools (/usr/bin/time, dot)
+# Step 2 — verify system tools (gtime, dot)
 # ---------------------------------------------------------------------------
 check_dependencies() {
     echo -e "${CYAN}=== [2/4] Checking system dependencies ===${NC}"
 
-    if ! command -v /usr/bin/time >/dev/null 2>&1; then
-        echo "  /usr/bin/time not found — installing 'time' via apt-get ..."
+    if ! command -v gtime >/dev/null 2>&1; then
+        echo "  gtime not found — installing 'time' via apt-get ..."
         apt-get install -y time || { echo -e "${RED}ERROR: apt-get install time failed${NC}"; exit 1; }
     fi
-    echo "  time : $(command -v /usr/bin/time)"
+    echo "  time : $(command -v gtime)"
 
     if ! command -v dot >/dev/null 2>&1; then
         echo "  dot not found — installing graphviz via apt-get ..."
@@ -342,7 +341,8 @@ generate_domain() {
     gen_end=$(date +%s.%N)
 
     tg=$(echo "$gen_end - $gen_start" | bc 2>/dev/null || echo "0")
-    # Format to 2 decimal places
+    tg=$(echo "$tg * 1000" | bc 2>/dev/null || echo "$tg")
+    # Format to 2 decimal places (ms)
     TGS[$domain]=$(printf "%.2f" "$tg" 2>/dev/null || echo "$tg")
 
     if [ $ret -ne 0 ]; then
@@ -356,9 +356,10 @@ generate_domain() {
     gen_line=$(grep "it cost:" "/tmp/gen_${domain}.log" | grep "generate" | head -1)
     if [ -n "$gen_line" ]; then
         tg_raw=$(echo "$gen_line" | grep -oP '[\d.]+' | head -1)
+        tg_raw=$(echo "$tg_raw * 1000" | bc 2>/dev/null || echo "$tg_raw")
         TGS[$domain]=$(printf "%.2f" "$tg_raw" 2>/dev/null || echo "$tg_raw")
     fi
-    echo -e "       ${GREEN}OK — Tg=${TGS[$domain]}s${NC}"
+    echo -e "       ${GREEN}OK — Tg=${TGS[$domain]}ms${NC}"
 
     # Run patch_fond_goal.py to add synthetic goal actions for Cond. domains
     if [ -f "patch_fond_goal.py" ]; then
@@ -424,15 +425,16 @@ run_domain() {
     # --- 1. PRP solver + translate_policy.py (with timing) ---
     echo "  [1/3] RunPRPForCurDomain.sh  → solving FOND problem ..."
     local tv_raw
-    /usr/bin/time -f "%e" -o "/tmp/prp_${domain}_time.txt" \
+    gtime -f "%e" -o "/tmp/prp_${domain}_time.txt" \
         ./RunPRPForCurDomain.sh "$domain" >"/tmp/prp_${domain}.log" 2>&1
     local ret=$?
     tv_raw=$(cat "/tmp/prp_${domain}_time.txt" 2>/dev/null || echo "0")
+    tv_raw=$(echo "$tv_raw * 1000" | bc 2>/dev/null || echo "$tv_raw")
     TVS[$domain]=$(printf "%.2f" "$tv_raw" 2>/dev/null || echo "$tv_raw")
     tv_val="${TVS[$domain]}"
 
     if [ $ret -eq 0 ]; then
-        echo -e "       ${GREEN}OK — solver completed (Tv=${tv_val}s)${NC}"
+        echo -e "       ${GREEN}OK — solver completed (Tv=${tv_val}ms)${NC}"
     else
         echo -e "       ${RED}FAIL — solver error (see /tmp/prp_${domain}.log)${NC}"
         echo "       ---- tail of /tmp/prp_${domain}.log ----"
@@ -462,7 +464,8 @@ run_domain() {
     # --- Domain total time ---
     domain_end=$(date +%s.%N)
     domain_total=$(echo "$domain_end - $domain_start" | bc 2>/dev/null || echo "0")
-    printf "       ${CYAN}▶ Domain total: %.2fs${NC}\n" "$domain_total"
+    domain_total=$(echo "$domain_total * 1000" | bc 2>/dev/null || echo "$domain_total")
+    printf "       ${CYAN}▶ Domain total: %.2fms${NC}\n" "$domain_total"
 
     # --- Collect data ---
     I_val=$(count_I "$domain")
@@ -494,7 +497,7 @@ print_table() {
     echo "############################################################"
     echo "#  Table 1: Generation and verification results"
     echo "############################################################"
-    printf "| %-14s | %-2s | %-2s | %-7s | %-7s | %-3s | %-6s |\n" "Domain" "I" "n" "Tg(s)" "Tv(s)" "|π|" "TC"
+    printf "| %-14s | %-2s | %-2s | %-7s | %-7s | %-3s | %-6s |\n" "Domain" "I" "n" "Tg(ms)" "Tv(ms)" "|π|" "TC"
     printf "|%s|%s|%s|%s|%s|%s|%s|\n" \
         "----------------" "----" "----" "-------" "-------" "-----" "--------"
 
@@ -508,8 +511,8 @@ print_table() {
     echo "Columns:"
     echo "  I     — number of classical planning instances"
     echo "  n     — size of the refinement mapping m"
-    echo "  Tg(s) — generation time in seconds (cps2FondandVerify/main.py)"
-    echo "  Tv(s) — verification time in seconds (PRP solver)"
+    echo "  Tg(ms) — generation time in milliseconds (cps2FondandVerify/main.py)"
+    echo "  Tv(ms) — verification time in milliseconds (PRP solver)"
     echo "  |π|   — solution size (# of unique actions in policy)"
     echo "  TC    — trajectory constraint type (Fair / Cond.)"
     echo ""

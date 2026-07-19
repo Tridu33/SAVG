@@ -142,6 +142,28 @@ int main(int argc, const char **argv) {
     g_policy->update_policy(regression_steps);
     g_best_policy = g_policy;
     g_best_policy_score = g_policy->get_score();
+
+    // HACK: Dump policy immediately after initial generation to avoid
+    // crashes in JIT repair phase (macOS ARM64 compatibility).
+    cout << "Dumping the initial policy..." << endl;
+    if (1 == g_dump_policy) {
+        ofstream outfile;
+        outfile.open("policy.out", ios::out);
+        g_policy->generate_cpp_input(outfile);
+        outfile.close();
+        outfile.open("policy.fsap", ios::out);
+        if (g_deadend_policy)
+            g_deadend_policy->generate_cpp_input(outfile);
+        else
+            outfile << "check 0" << endl;
+        outfile.close();
+    } else if (2 == g_dump_policy) {
+        g_policy->dump_human_policy();
+        if (g_deadend_policy)
+            g_deadend_policy->dump_human_policy(true);
+    }
+    cout << "done dumping policy" << endl;
+    exit_with(EXIT_PLAN_FOUND);
     
     if (g_sample_for_depth1_deadends)
         sample_for_depth1_deadends(engine->get_plan(), new PartialState(g_initial_state()));

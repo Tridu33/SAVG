@@ -15,13 +15,7 @@ If holds: vgoal()
 Execute: goal / SC / d=0
 
 If holds: vstart()
-Execute: 8_virtual_source_act_1_7  / SC / d=1
-
-If holds: not(vstart())/not(allvisited())/not(h_curvisted())/not(vgoal())
-Execute: 0_visitcur_7_1  / SC / d=1
-
-If holds: not(vstart())/not(allvisited())/h_curvisted()/not(vgoal())
-Execute: 1_updatecur2llnext_0_1  / SC / d=2
+Execute: 8_virtual_source_act_1_7  / NSC / d=1
 
 FSAP:
 

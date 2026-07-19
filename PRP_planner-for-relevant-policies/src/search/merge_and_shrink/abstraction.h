@@ -5,7 +5,7 @@
 
 #include "../operator_cost.h"
 
-#include <ext/slist>
+#include <forward_list>
 #include <vector>
 
 class State;
@@ -67,7 +67,7 @@ class Abstraction {
     void compute_init_distances_general_cost();
     void compute_goal_distances_general_cost();
 
-    void apply_abstraction(std::vector<__gnu_cxx::slist<AbstractStateRef> > &collapsed_groups);
+    void apply_abstraction(std::vector<std::forward_list<AbstractStateRef> > &collapsed_groups);
 
     int total_transitions() const;
     int unique_unlabeled_transitions() const;

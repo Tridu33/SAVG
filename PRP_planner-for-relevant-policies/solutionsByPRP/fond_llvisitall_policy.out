@@ -3,10 +3,4 @@ If holds: var2:0
 Execute: goal / SC / d=0
 
 If holds: var3:0
-Execute: 8_virtual_source_act_1_7  / SC / d=1
-
-If holds: var3:1 var0:1 var1:1 var2:1
-Execute: 0_visitcur_7_1  / SC / d=1
-
-If holds: var3:1 var0:1 var1:0 var2:1
-Execute: 1_updatecur2llnext_0_1  / SC / d=2
+Execute: 8_virtual_source_act_1_7  / NSC / d=1

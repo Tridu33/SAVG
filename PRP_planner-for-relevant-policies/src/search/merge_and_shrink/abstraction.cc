@@ -700,7 +700,7 @@ AbstractStateRef CompositeAbstraction::get_abstract_state(const State &state) co
 }
 
 void Abstraction::apply_abstraction(
-    vector<slist<AbstractStateRef> > &collapsed_groups) {
+    vector<forward_list<AbstractStateRef> > &collapsed_groups) {
     /* Note on how this method interacts with the distance information
        (init_distances and goal_distances): if no two states with
        different g or h values are combined by the abstraction (i.e.,
@@ -729,7 +729,7 @@ void Abstraction::apply_abstraction(
     cout << tag() << "applying abstraction (" << size()
          << " to " << collapsed_groups.size() << " states)" << endl;
 
-    typedef slist<AbstractStateRef> Group;
+    typedef forward_list<AbstractStateRef> Group;
 
     vector<int> abstraction_mapping(num_states, PRUNED_STATE);
 
