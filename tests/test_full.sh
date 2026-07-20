@@ -51,7 +51,7 @@ DOMAINS=(
     NestedVar
     Snow
     # DeliveryFuel
-    # TrashCollection
+    TrashCollection
 )
 
 # Domain→CPN mapping used by cps2FondandVerify/main.py
@@ -66,7 +66,7 @@ declare -A DOMAIN_CPN=(
     ["TreeChop"]=2
     ["NestedVar"]=1
     ["Snow"]=1
-    # ["TrashCollection"]=3
+    ["TrashCollection"]=1
     # ["DeliveryFuel"]=3
 )
 
@@ -84,7 +84,7 @@ declare -A DOMAIN_DISPLAY=(
     ["NestedVar"]="NestVar"
     ["Snow"]="Snow"
     # ["DeliveryFuel"]="Delivery"
-    # ["TrashCollection"]="Trash"
+    ["TrashCollection"]="Trash"
 )
 
 # ---------------------------------------------------------------------------
@@ -463,7 +463,7 @@ main() {
             _tv=$(eval "echo \${STATS_TV_${domain}:---}" 2>/dev/null)
             _pi=$(eval "echo \${STATS_PI_${domain}:---}" 2>/dev/null)
             case "$domain" in
-                TreeChop|NestedVar|Snow|DeliveryFuel) _tc="Cond." ;;
+                TreeChop|NestedVar|TrashCollection|Snow|DeliveryFuel) _tc="Cond." ;;
                 *)                                  _tc="Fair"  ;;
             esac
             printf "| %-13s | %2s | %2s | %8s | %8s | %2s | %-6s |\n" \

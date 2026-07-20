@@ -169,6 +169,57 @@ policies (via `policy_exporter.py`) that are byte-identical at the rule level.
 
 ---
 
+
+
+```mermaid
+flowchart TD
+    %% 节点样式定义
+    classDef env fill:#1a1a2e,stroke:#4ecca3,stroke-width:2px,color:#fff,font-size:13px
+    classDef model fill:#16213e,stroke:#0f3460,stroke-width:2px,color:#e94560,font-size:12px
+    classDef data fill:#0f3460,stroke:#533483,stroke-width:2px,color:#fff,font-size:11px
+    classDef verify fill:#1a1a2e,stroke:#ffd700,stroke-width:3px,color:#ffd700,font-size:14px
+    classDef output fill:#16213e,stroke:#4ecca3,stroke-width:2px,color:#fff,font-size:12px
+    
+    %% 起点：PDDL 环境
+    PDDL["PDDL domain<br/>(blocks_clear)"]:::env --> Gym["BlocksClearEnv<br/>(Gymnasium)"]:::env
+    
+    %% 并行路径开始
+    Gym --> PyG
+    Gym --> DQN
+    
+    %% 左路径：PyG 关系编码器
+    subgraph LeftPath [特征提取与抽象 MDP]
+        direction TB
+        PyG["PyG relational encoder<br/>(state → 4-bit features)"]:::model
+        PyG --> FeatureVec["4-bit feature vector<br/>[BlocksCleared, H, VGoal, VStart]"]:::data
+        FeatureVec --> QTableAbs["Abstract MDP Q-table<br/>(16 × n_actions)<br/>value iteration"]:::model
+    end
+    
+    %% 右路径：DQN 小 MLP
+    subgraph RightPath [深度强化学习策略]
+        direction TB
+        DQN["DQN (small MLP)<br/>(4 → 32 → 32 → 11)"]:::model
+    end
+    
+    %% 汇聚到具体 Q-table
+    QTableAbs --> QTable["Q-table<br/>(16 × 4)"]:::data
+    DQN --> QTable
+    
+    %% 监督学习
+    QTable -->|"supervise (CE loss)"| BNN["Brevitas BinaryPolicyNet<br/>(BNN)"]:::model
+    
+    %% 等价性验证
+    BNN --> Verify{"16/16 equivalence?<br/>(argmax_Q == argmax_BNN)"}:::verify
+    
+    %% 最终输出
+    Verify --> Output["PRP policy.out / human_policy.out<br/>(equivalent DAG)"]:::output
+    
+    %% 连线样式
+    linkStyle default stroke:#4ecca3,stroke-width:1.5px
+    linkStyle 4,5 stroke:#e94560,stroke-width:2px
+    linkStyle 6 stroke:#ffd700,stroke-width:2.5px
+```
+
 ## 7. Extending to larger domains
 
 The same pipeline applies to any FOND domain with a known grounding:
