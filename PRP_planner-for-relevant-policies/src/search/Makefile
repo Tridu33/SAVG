@@ -188,7 +188,7 @@ DEPEND = g++ -Iext -MM
 CCOPT = -Iext
 CCOPT += -g
 CCOPT += -m64 #-m32
-CCOPT += -Wall -W -Wno-sign-compare -Wno-deprecated -Wno-mismatched-tags -Wno-unused-but-set-variable -Wno-unused-private-field -std=c++11 -pedantic -Werror
+CCOPT += -Wall -W -Wno-sign-compare -Wno-deprecated -Wno-mismatched-tags -Wno-unused-but-set-variable -Wno-unused-private-field -Wno-deprecated-copy -Wno-error=maybe-uninitialized -std=c++11 -pedantic -Werror
 
 ## The following lines contain workarounds for bugs when
 ## cross-compiling to 64 bit on 32-bit systems using gcc 4.4 or gcc
