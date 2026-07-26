@@ -20,12 +20,12 @@
         :precondition (and (not(vStart)) (not(vGoal)) (not(allvisited)) (not(h_curispophead1)) (not(h_curinserted)) )
         :effect (and (not(vStart)) (not(vGoal)) (not(allvisited)) (h_curispophead1) (not(h_curinserted)) )
     )
-    (:action 2_insert2_1_13
+    (:action 2_insert2_1_9
             :parameters ()
         :precondition (and (not(vStart)) (not(vGoal)) (not(allvisited)) (h_curispophead1) (not(h_curinserted)) )
         :effect (oneof 
         (and (not(vStart)) (not(vGoal)) (not(allvisited)) (not(h_curispophead1)) (h_curinserted) )
-        (and (not(vStart)) (vGoal) (allvisited) (not(h_curispophead1)) (h_curinserted) )
+        (and (not(vStart)) (vGoal) (not(allvisited)) (not(h_curispophead1)) (h_curinserted) )
         )
     )
     (:action 1_gethead1_0

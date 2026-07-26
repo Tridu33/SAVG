@@ -1,7 +1,7 @@
 digraph G {
     node [shape=plaintext]
 2->1[label = "insert2"]
-2->13[label = "insert2"]
+2->9[label = "insert2"]
 
 0->2[label = "pophead1"]
 
