@@ -37,23 +37,9 @@ from typing import Dict, List
 #   - goal_fond_predicate:  the fond_predicate that flips True at the goal
 #   - goal_predicate_value: True for "should be true at goal", False for "should be false"
 DOMAIN_GOAL_PREDICATES: Dict[str, Dict[str, Dict[str, bool]]] = {
-    "TreeChop": {
-        # Goal (low-level) is (treeDown).
-        # High predicates: allBranchesChopped=True, H=False at the moment fellTree is applicable.
-        "TreeChop": {
-            "allBranchesChopped": True,
-            "H": False,
-        },
-    },
-    "NestedVar": {
-        # Goal (low-level) is (and (x1empty) (x2empty)).
-        # x2empty is not a fond predicate (only x1empty and h_hasX1 are).
-        # Goal high predicates: x1empty=True, h_hasX1=False.
-        "NestedVar": {
-            "x1empty": True,
-            "h_hasX1": False,
-        },
-    },
+    # TreeChop — fixed by Simulator.py or-quantifier fix (fellTree now reachable)
+    # TrashCollection — already had complete FOND abstraction
+    # NestedVar — already had complete FOND abstraction (3_decX2_6 reaches vGoal)
     "Snow": {
         # Goal (low-level) is (and (atDry) (allCleared)).
         # High predicates: allCleared=True (allDryCleared, allWetCleared both True).
@@ -68,14 +54,6 @@ DOMAIN_GOAL_PREDICATES: Dict[str, Dict[str, Dict[str, bool]]] = {
         # High predicates: allDelivered=True.
         "DeliveryFuel": {
             "allDelivered": True,
-            "h_carrying": False,
-        },
-    },
-    "TrashCollection": {
-        # Goal (low-level) is (and (atDump) (allCollected)).
-        # High predicates: allCollected=True.
-        "TrashCollection": {
-            "allCollected": True,
             "h_carrying": False,
         },
     },

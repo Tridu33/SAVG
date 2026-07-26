@@ -473,6 +473,9 @@ class Simulator():
         elif quantifier == 'and':            # others
             fml.insert(0, 'and')
             return fmltrySATIncurLowState(fml, curLowStatePos, curLowStateNeg)
+        elif quantifier == 'or':            # or clause — route to SAT checker
+            fml.insert(0, 'or')
+            return fmltrySATIncurLowState(fml, curLowStatePos, curLowStateNeg)
         elif len(fml) == 0:
             # Unary predicates
             if [quantifier] in curLowStatePos:
