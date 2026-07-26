@@ -446,7 +446,7 @@ class Simulator():
                     newfmlstr = newfmlstr.replace(arg_unknown,arg_try) 
                 fmltry = eval(newfmlstr)
                 # exists 
-                if fmltrySATIncurLowState(fmltry[0],curLowStatePos,curLowStateNeg):
+                if self.fmlsatlowState(curLowStateobj, fmltry[0], curp):
                     return True # Existence, one truth, return to truth
                 else :
                     continue
@@ -463,7 +463,7 @@ class Simulator():
                     newfmlstr = newfmlstr.replace(arg_unknown,arg_try) 
                 fmltry = eval(newfmlstr)
                 # exists As if there is a problem, what needs to be traversed is that all objects of this type combining Cartesian product can meet the need to support sentences
-                if fmltrySATIncurLowState(fmltry[0],curLowStatePos,curLowStateNeg):
+                if self.fmlsatlowState(curLowStateobj, fmltry[0], curp):
                     continue# The present moment is content
                 else:
                     return False # There is a "combination of variables tentatively tested for a given type" that is not satisfied, one false, and false
